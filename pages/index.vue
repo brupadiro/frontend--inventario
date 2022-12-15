@@ -23,11 +23,42 @@
       </v-row>
 
       <v-row>
-        <v-col class="d-flex" cols="12" md="12">
-          <v-text-field v-model="codigoBarras" :rules="codigoRules" label="Código de barras" required></v-text-field>
-        </v-col>
-      </v-row>
+        <v-col class="d-flex align-center" cols="12" md="12">
+          <v-text-field v-model="codigoBarras" readonly :rules="codigoRules" label="Código de barras" required></v-text-field>
+          <v-dialog
+      v-model="dialog"
+      width="500"
+    >
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn
+          dark
+          v-bind="attrs"
+          v-on="on"
+        >
+        <v-icon>mdi-barcode-scan</v-icon>
+        </v-btn>
+      </template>
 
+      <v-card>
+        <barcodeReader/>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="primary"
+            text
+            @click="dialog = false"
+          >
+            Cerrar
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+        </v-col>
+        
+      </v-row>
+      
+				
       <v-row>
         <v-col class="d-flex" cols="12" md="12">
           <v-text-field v-model="codigoProducto" :rules="codigoRules" label="Codigo del producto" required>
@@ -105,9 +136,13 @@
 </template>
 
 <script>
+import barcodeReader from '../components/barcodeReader.vue'
+
   export default {
+  components: { barcodeReader },
     name: 'IndexPage',
     data: () => ({
+      dialog: false,
       date: null,
       menu: false,
       valid: false,
