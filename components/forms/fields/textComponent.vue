@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex flex-column">
     <label class="font-weight-regular mb-2 text-uppercase text-subtitle-2" :class="labelColor">{{label}}</label>
-    <v-text-field class="rounded-lg font-weight-regular" solo ref="input"  hide-details v-model="fieldValue" @focus="checkFocus()" v-bind="props">
+    <v-text-field height="55" class="rounded-lg font-weight-regular" solo ref="input"  hide-details v-model="fieldValue" @focus="checkFocus()" v-bind="props">
       <template v-slot:prepend-inner>
         <slot></slot>
       </template>

@@ -10,7 +10,7 @@
 
       </v-text-field>
       <v-btn class="button-width rounded-l-0 black--text rounded-lg font-weight-regular" :color="buttonColor"
-        height="55" x-large @click="handler()">
+        height="55" x-large @click="handler">
         <slot name="buttonicon">
           {{$data["button-label"]}}&nbsp;<v-icon color="white">{{icon}}</v-icon>
         </slot>
@@ -31,7 +31,7 @@
         type: String,
         default: '',
       },
-      click: {
+      handler: {
         type: Function,
         default: () => {}
       },
@@ -69,10 +69,6 @@
       this.isValid = this.$refs.input.validate()
     },
     methods: {
-      handler() {
-        this.$emit('click', this.fieldValue)
-        this.actionSuccess = true
-      },
       checkFocus() {
         if (!this.focused) {
           this.focused = true

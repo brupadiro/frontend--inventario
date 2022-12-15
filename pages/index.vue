@@ -17,7 +17,7 @@
                   </formsFieldsTextComponent>
                 </v-col>
                 <v-col class="col-12">
-                  <formsFieldsTextButtonComponent background-color="white" label-color="white--text" v-model="deposito"
+                  <formsFieldsTextButtonComponent :handler="updateBarcodeDeposit" background-color="white" label-color="white--text" v-model="deposito"
                     label="Depósito" required>
                     <img src="/icons/storage.png" width="30">
                     <template v-slot:buttonicon>
@@ -35,7 +35,7 @@
                 </v-col>
 
                 <v-col class="col-12">
-                  <formsFieldsTextButtonComponent background-color="white" label-color="white--text"
+                  <formsFieldsTextButtonComponent :handler="updateBarcocdeProduct" background-color="white" label-color="white--text"
                     v-model="codigoBarras" :rules="codigoRules" label="Código de barras" required>
                     <img src="/icons/barcode.png" width="30">
                     <template v-slot:buttonicon>
@@ -109,6 +109,8 @@
 
       </v-col>
     </v-row>
+    <barcodeReaderComponent v-model="openModalBarcodeProduct"></barcodeReaderComponent>
+    <barcodeReaderComponent v-model="openModalBarcodeDeposit"></barcodeReaderComponent>
   </v-container>
 
 </template>
@@ -117,6 +119,8 @@
   export default {
     name: 'IndexPage',
     data: () => ({
+      openModalBarcodeProduct: false,
+      openModalBarcodeDeposit: false,
       date: null,
       menu: false,
       valid: false,
@@ -156,6 +160,12 @@
       },
     },
     methods: {
+      updateBarcocdeProduct() {
+        this.openModalBarcodeProduct = true
+      },
+      updateBarcodeDeposit() {
+        this.openModalBarcodeDeposit = true
+      },
       save(date) {
         this.$refs.menu.save(date)
       },
