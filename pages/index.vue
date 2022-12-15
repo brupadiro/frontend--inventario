@@ -17,16 +17,14 @@
                   </formsFieldsTextComponent>
                 </v-col>
                 <v-col class="col-12">
-                  <formsFieldsTextButtonComponent :handler="updateBarcodeDeposit" background-color="white" label-color="white--text" v-model="deposito"
-                    label="Depósito" required>
+                  <formsFieldsTextButtonComponent :handler="updateBarcodeDeposit" background-color="white"
+                    label-color="white--text" v-model="deposito" label="Depósito" required>
                     <img src="/icons/storage.png" width="30">
                     <template v-slot:buttonicon>
                       <img src="/icons/barcode-scanner.png" width="30">
                     </template>
-
                   </formsFieldsTextButtonComponent>
                 </v-col>
-
                 <v-col class="col-12">
                   <formsFieldsTextComponent background-color="white" label-color="white--text" v-model="ubicacion"
                     :rules="ubicacionRules" label="Ubicación" required>
@@ -35,8 +33,9 @@
                 </v-col>
 
                 <v-col class="col-12">
-                  <formsFieldsTextButtonComponent :handler="updateBarcocdeProduct" background-color="white" label-color="white--text"
-                    v-model="codigoBarras" :rules="codigoRules" label="Código de barras" required>
+                  <formsFieldsTextButtonComponent :handler="updateBarcocdeProduct" background-color="white"
+                    label-color="white--text" v-model="codigoBarras" :rules="codigoRules" label="Código de barras"
+                    required>
                     <img src="/icons/barcode.png" width="30">
                     <template v-slot:buttonicon>
                       <img src="/icons/barcode-scanner.png" width="30">
@@ -71,11 +70,21 @@
                   </v-menu>
                 </v-col>
 
-                <v-col class="col-12">
-                  <formsFieldsTextComponent background-color="white" label-color="white--text" v-model="cuenta"
-                    :rules="cuentaRules" label="Tipo de cuenta" required>
-                    <img src="/icons/numbers.png" width="30">
-                  </formsFieldsTextComponent>
+                <v-col class="col-12 py-4">
+                  <label class="font-weight-regular mb-2 text-uppercase text-subtitle-2 white--text">TIPO DE CUENTA</label>
+
+                  <v-btn-toggle class="elevation-3 rounded-lg" color="primary white--text" v-model="cuenta"
+                    style="width:100%">
+                    <v-btn width="33%" active-class="primary" class="font-weight-bold" value="1">
+                      <img src="/icons/1.png" width="30">
+                    </v-btn>
+                    <v-btn width="33%" active-class="primary" class="font-weight-bold" value="2">
+                      <img src="/icons/2.png" width="30">
+                    </v-btn>
+                    <v-btn width="33%" active-class="primary" class="font-weight-bold" value="3">
+                      <img src="/icons/3.png" width="30">
+                    </v-btn>
+                  </v-btn-toggle>
                 </v-col>
 
                 <v-col class="col-12">
@@ -109,8 +118,8 @@
 
       </v-col>
     </v-row>
-    <barcodeReaderComponent v-model="openModalBarcodeProduct"></barcodeReaderComponent>
-    <barcodeReaderComponent v-model="openModalBarcodeDeposit"></barcodeReaderComponent>
+    <barcodeReaderComponent @decode="deposito = $result" v-model="openModalBarcodeProduct"></barcodeReaderComponent>
+    <barcodeReaderComponent @decode="codigoBarras = $result" v-model="openModalBarcodeDeposit"></barcodeReaderComponent>
   </v-container>
 
 </template>
@@ -143,7 +152,7 @@
       codigoProducto: '',
       descripcion: '',
       fechaVencimiento: '',
-      cuenta: '',
+      cuenta: '1',
       bultos: '',
       cantidadBulto: '',
       cantidadFinal: '',

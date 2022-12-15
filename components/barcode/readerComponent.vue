@@ -33,7 +33,7 @@
     },
     methods: {
       onDecode(result) {
-        console.log(result)
+        this.$emit('decode',result)
       }
     }
 
