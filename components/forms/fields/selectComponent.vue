@@ -1,12 +1,9 @@
 <template>
   <div class="d-flex flex-column">
     <label class="font-weight-regular mb-2 text-uppercase text-subtitle-2" :class="labelColor">{{label}}</label>
-    <v-select class="rounded-lg" solo ref="input" hide-details v-model="fieldValue" @focus="checkFocus()" v-bind="props">
-      <template v-slot:append>
-        <template v-if="focused">
-          <v-icon v-if="!isValid" class="red--text">mdi-alert-circle</v-icon>
-          <v-icon v-else color="success">mdi-check-circle</v-icon>
-        </template>
+    <v-select chips class="rounded-lg" solo ref="input" hide-details v-model="fieldValue" @focus="checkFocus()" v-bind="props">
+      <template v-slot:prepend-inner>
+        <slot></slot>
       </template>
     </v-select>
   </div>
