@@ -1,0 +1,26 @@
+[{
+  "codigobarras": "123456",
+  "sku": "ABC123",
+  "descripcion": "Producto 1",
+  "fechavenc": ["2022-12-31"],
+  "cuenta": 1,
+  "bultos": "0",
+  "deposito": "A1",
+  "ubicacion": "Ubicacion 2"
+}, {
+  "codigobarras": "987654",
+  "sku": "DEF456",
+  "descripcion": "Producto 2",
+  "fechavenc": ["2022-12-31","2022-10-31"],
+  "cuenta": 1,
+  "deposito": "B2",
+  "ubicacion": "Ubicacion 2"
+}, {
+  "codigobarras": "456789",
+  "sku": "GHI789",
+  "descripcion": "Producto 3",
+  "fechavenc": ["2022-12-31"],
+  "cuenta": 1,
+  "deposito": "C3",
+  "ubicacion": "Ubicacion 3"
+}]
