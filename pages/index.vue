@@ -371,8 +371,6 @@
         this.openModalBarcodeDeposit = true
       },
       updateConteo() {
-        this.$store.dispatch('articles/saveLog', this.product)
-        return
         this.openModalConteo = true
         if (this.product.cant_final != this.product.CANT_PEND) {
           this.errorConteo = true
