@@ -2,14 +2,14 @@
   <div class="fill-width">
     <label class="font-weight-regular mb-2 text-uppercase text-subtitle-2" :class="labelColor">{{label}}</label>
     <v-input v-bind="$attrs['class']" class="fill-width d-flex flex-column fill-width" hide-details>
-      <v-text-field height="55" solo class="elevation-2  rounded-lg rounded-r-0 font-weight-regular input-width" ref="input"
-        hide-details v-model="value" v-bind="$attrs">
+      <v-text-field height="55" solo :readonly="disabled" class="elevation-2  rounded-lg rounded-r-0 font-weight-regular input-width" ref="input"
+        hide-details v-model="fieldValue" v-bind="$attrs">
         <template v-slot:prepend-inner>
         <slot></slot>
       </template>
 
       </v-text-field>
-      <v-btn class="button-width rounded-l-0 black--text rounded-lg font-weight-regular" :disabled="buttondisabled" :color="buttonColor"
+      <v-btn class="button-width rounded-l-0 black--text rounded-lg font-weight-regular" :disabled="disabled" :color="buttonColor"
         height="55" x-large @click="handler">
         <slot name="buttonicon">
           {{$data["button-label"]}}&nbsp;<v-icon color="white">{{icon}}</v-icon>
@@ -17,9 +17,6 @@
         
       </v-btn>
     </v-input>
-    <v-snackbar color="success" v-model="actionSuccess">
-      {{notificationText}}
-    </v-snackbar>
   </div>
 </template>
 
@@ -27,7 +24,7 @@
   export default {
     inheritAttrs: false,
     props: {
-      buttondisabled:{
+      disabled:{
         type: Boolean,
         default: false
       },
@@ -83,7 +80,10 @@
     watch: {
       value(newValue) {
         this.fieldValue = newValue
-      }
+      },
+      fieldValue(newValue) {
+        this.$emit('input', newValue);
+      },
     },
     computed: {
       props() {

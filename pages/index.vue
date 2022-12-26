@@ -11,30 +11,26 @@
             <v-card-text>
               <v-row>
                 <v-col class="col-12">
-                  <formsFieldsTextComponent background-color="white" label-color="white--text" v-model="usuario"
+                  <formsFieldsTextComponent background-color="white" label-color="white--text" v-model="product.USUARIO"
                     label="Usuario" required>
                     <img src="/icons/account.png" width="30">
                   </formsFieldsTextComponent>
                 </v-col>
                 <v-col class="col-12">
-                  <formsFieldsTextButtonComponent :handler="updateBarcodeDeposit" background-color="white"
-                    label-color="white--text" :value="product.deposit" label="Depósito" required>
-                    <img src="/icons/storage.png" width="30">
-                    <template v-slot:buttonicon>
-                      <img src="/icons/barcode-scanner.png" width="30">
+                  <label class="font-weight-regular mb-4 text-uppercase text-subtitle-2 white--text">
+                    Ubicación
+                  </label>
+                  <v-autocomplete hide-details height="56" v-model="UBICACION_ARTI" :items="locationList" class="rounded-lg"
+                    chips small-chips label="Outlined" solo background-color="white">
+                    <template v-slot:prepend-inner>
+                      <img src="/icons/pin.png" width="30">
                     </template>
-                  </formsFieldsTextButtonComponent>
-                </v-col>
-                <v-col class="col-12">
-                  <FormsFieldsSelectComponent :items="['Ubicacion 1','Ubicacion 2','Ubicacion 3']"
-                    background-color="white" label-color="white--text" v-model="ubicacion" label="Ubicación" required>
-                    <img src="/icons/pin.png" width="30">
-                  </FormsFieldsSelectComponent>
+                  </v-autocomplete>
                 </v-col>
 
                 <v-col class="col-12">
-                  <formsFieldsTextButtonComponent :buttondisabled="ubicacion == ''" :handler="updateBarcodeProduct"
-                    background-color="white" label-color="white--text" :value="product.codigobarras"
+                  <formsFieldsTextButtonComponent :disabled="UBICACION_ARTI == ''" :handler="updateBarcodeProduct"
+                    background-color="white" label-color="white--text" v-model="product.COD_BARRAS"
                     label="Código de barras" required>
                     <img src="/icons/barcode.png" width="30">
                     <template v-slot:buttonicon>
@@ -45,20 +41,29 @@
 
                 <v-col class="col-12">
                   <formsFieldsTextComponent background-color="white" readonly label-color="white--text"
-                    v-model="product.sku" label="Codigo del producto" required>
+                    v-model="product.COD_ARTICULO" label="Codigo del producto" required>
                     <img src="/icons/code.png" width="30">
                   </formsFieldsTextComponent>
                 </v-col>
 
                 <v-col class="col-12">
                   <formsFieldsTextComponent background-color="white" readonly label-color="white--text"
-                    v-model="product.descripcion" :counter="100" label="Descripcion del producto" required>
+                    v-model="product.DESCRIP_ARTI" :counter="100" label="Descripcion del producto" required>
                     <img src="/icons/product.png" width="30">
                   </formsFieldsTextComponent>
                 </v-col>
                 <v-col class="col-12">
+                  <formsFieldsSelectComponent
+                    :items="['DEP','DUM','FUL','MAL','MAY','MEL','NDT','PAT','PRE','RUP','VEN']"
+                    background-color="white" label-color="white--text" v-model="product.COD_DEPO" label="Depósito"
+                    required>
+                    <img src="/icons/barcode-scanner.png" width="30">
+                  </formsFieldsSelectComponent>
+                </v-col>
+
+                <v-col class="col-12">
                   <formsFieldsTextComponent background-color="white" label-color="white--text"
-                    v-model="product.fechavenc" label="Fecha de vencimiento" readonly>
+                    v-model="product.FECHA_VENCI" label="Fecha de vencimiento" readonly>
                     <img src="/icons/calendar.png" width="30">
                   </formsFieldsTextComponent>
                   <div v-if="errorFechaVenc" class="red--text">
@@ -87,7 +92,7 @@
                 </v-col>
 
                 <v-col class="col-12">
-                  <formsFieldsTextComponent background-color="white" label-color="white--text" v-model="product.bultos"
+                  <formsFieldsTextComponent background-color="white" label-color="white--text" v-model="product.CANTIDAD"
                     label="Cantidad de bultos" required>
                     <img src="/icons/staging.png" width="30">
                   </formsFieldsTextComponent>
@@ -95,14 +100,14 @@
 
                 <v-col class="col-12">
                   <formsFieldsTextComponent background-color="white" label-color="white--text"
-                    v-model="product.cant_bultos" label="Cantidad en bulto" required>
+                    v-model="product.UNI_X_BULTO" label="Cantidad en bulto" required>
                     <img src="/icons/products.png" width="30">
                   </formsFieldsTextComponent>
                 </v-col>
 
                 <v-col class="col-12">
                   <formsFieldsTextComponent background-color="white" readonly label-color="white--text"
-                    v-model="product.cant_final" label="Cantidad Final" required>
+                    v-model="product.CANT_CONTEO" label="Cantidad Final" required>
                     <img src="/icons/equal.png" width="30">
                   </formsFieldsTextComponent>
                 </v-col>
@@ -110,7 +115,7 @@
 
             </v-card-text>
             <v-card-actions>
-              <v-btn block color="primary font-weight-bold rounded-lg" @click="updateConteo()">Enviar</v-btn>
+              <v-btn block color="primary font-weight-bold rounded-lg" @click="openModalConfirmacion= true;">Enviar</v-btn>
             </v-card-actions>
           </v-card>
         </v-form>
@@ -163,6 +168,56 @@
       </v-card>
     </v-dialog>
 
+    <v-dialog v-model="openModalConfirmacion">
+      <v-card>
+        <v-card-title class="font-weight-bold">
+          Confirmar el conteo
+          <v-spacer></v-spacer>
+          <img src="/icons/alert.png" width="30">
+        </v-card-title>
+        <v-divider></v-divider>
+        <v-card-text class="py-2">
+          <v-row class="py-3">
+            <v-col class="col-6">
+              <span class="text-subtitle-1 font-weight-regular">Producto</span>
+            </v-col>
+            <v-col class="col-6 d-flex justify-end">
+              <span class="text-subtitle-1 font-weight-regular">{{ product.DESCRIP_ARTI }}</span>
+            </v-col>
+          </v-row>
+          <v-divider></v-divider>
+          <v-row class="py-3">
+            <v-col class="col-6">
+              <span class="text-subtitle-1 font-weight-regular">Vencimiento</span>
+            </v-col>
+            <v-col class="col-6 d-flex justify-end">
+              <span class="text-subtitle-1 font-weight-regular">{{ product.FECHA_VENCI }}</span>
+            </v-col>
+          </v-row>
+          <v-divider></v-divider>
+          <v-row class="py-3">
+            <v-col class="col-6">
+              <span class="text-subtitle-1 font-weight-regular">Conteo</span>
+            </v-col>
+            <v-col class="col-6 d-flex justify-end">
+              <span class="text-subtitle-1 font-weight-regular">{{ product.CANT_CONTEO }}</span>
+            </v-col>
+          </v-row>
+
+
+
+          <v-divider></v-divider>
+        </v-card-text>
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-btn outlined @click="openModalConfirmacion = false">Salir</v-btn>
+          <v-spacer></v-spacer>
+          <v-btn color="primary" @click="updateConteo()">Guardar</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+
 
     <v-dialog v-model="openModalUbication">
       <v-card>
@@ -179,7 +234,10 @@
         <v-card-actions>
           <v-btn outlined @click="openModalUbication = false">Salir</v-btn>
           <v-spacer></v-spacer>
-          <v-btn color="primary" @click="openModalUbication = false">Guardar</v-btn>
+          <v-btn color="primary" @click="()=>{
+            openModalUbication = false;
+            updateSobrante = true
+          }">Guardar</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -223,8 +281,10 @@
     data: () => ({
       openModalBarcodeProduct: false,
       openModalBarcodeDeposit: false,
+      openModalConfirmacion: false,
       openModalUbication: false,
       openModalConteo: false,
+      updateSobrante: false,
       date: null,
       menu: false,
       valid: false,
@@ -233,14 +293,14 @@
         sku: '',
         descripcion: '',
         deposito: '',
-        ubicacion: '',
+        UBICACION_ARTI: '',
         fechavenc: '',
         cuenta: '1',
-        bultos: 0,
-        cant_bultos: 0,
-        cant_final: 0,
+        CANTIDAD: 0,
+        UNI_X_BULTO: 0,
+        CANT_CONTEO: 0,
       },
-      ubicacion: '',
+      UBICACION_ARTI: '',
       usuario: '',
       errorFechaVenc: false,
       errorfechaVencText: '',
@@ -249,33 +309,40 @@
       activePicker: null,
       errorConteo: false,
     }),
-    watch: {
-      menu(val) {
-        val && setTimeout(() => (this.activePicker = 'YEAR'))
-      },
+    mounted() {
+      this.$store.dispatch('articles/findAllLocations')
     },
     methods: {
-      checkProduct(barcode) {
-        console.log(products)
-        let product = products.find(product => product.codigobarras === barcode.toString())
+      async checkProduct(barcode) {
+        await this.$store.dispatch('articles/find', barcode)
+        let fechaVencs = this.articlesList.filter((item) => item.FECHA_VENCI != null).map((item) => item.FECHA_VENCI)
+        let product = JSON.parse(JSON.stringify(this.articlesList[0]))
         if (product) {
-          this.product = product
 
-          if (this.product.ubicacion != this.ubicacion) {
+          const extraInfo = await this.$store.dispatch('articles/findExtraInfo', product.COD_ARTICULO)
+          console.log(extraInfo)
+          product.UNI_X_BULTO = extraInfo.data.UNI_X_BULTO
+          product.FECHA_VENCI = fechaVencs[0]
+          this.product = product
+          this.product.cuenta = 1
+
+          if (this.product.UBICACION_PARTIDA != this.UBICACION_ARTI) {
             this.openModalUbication = true
           }
-          const length = this.product.fechavenc.lenqth
-          var fechavenc = this.product.fechavenc[this.product.fechavenc.lenqth - 1]
+          var fechavenc = fechaVencs[0]
           const fechaVencBefore = moment(fechavenc, 'DD/MM/YYYY').isBefore(moment())
-          if (this.product.fechavenc.length > 1) {
+          if (fechaVencs.length > 1) {
             this.errorFechaVenc = true
             this.errorfechaVencText = 'Hay mas de una fecha de vencimiento'
             return
-          }
-          if (fechaVencBefore) {
+          } else if (fechaVencBefore) {
             this.errorFechaVenc = true
             this.errorfechaVencText = 'El producto esta vencido'
             return
+          } else if (product.VALIDAR_VENCI == "S") {
+            this.errorFechaVenc = true
+            this.errorfechaVencText = 'Es necesario validar la fecha de vencimiento'
+
           } else {
             this.errorFechaVenc = false
             this.errorfechaVencText = ''
@@ -285,7 +352,7 @@
         }
       },
       checkReadonly() {
-        if (this.ubicacion == '') {
+        if (this.UBICACION_ARTI == '') {
           return true
         } else {
           return false
@@ -304,8 +371,10 @@
         this.openModalBarcodeDeposit = true
       },
       updateConteo() {
+        this.$store.dispatch('articles/saveLog', this.product)
+        return
         this.openModalConteo = true
-        if (this.product.sku == 'GHI789') {
+        if (this.product.cant_final != this.product.CANT_PEND) {
           this.errorConteo = true
           this.product.cuenta = parseInt(this.product.cuenta) + 1
           if (this.product.cuenta > 3) {
@@ -313,19 +382,34 @@
             this.product = {}
           }
         } else {
-          console.log(2)
           this.product = {}
+          this.$store.dispatch('articles/saveLog', this.product)
         }
-        console.log(this.product.sku)
       },
       save(date) {
         this.$refs.menu.save(date)
       },
     },
+    computed: {
+      articlesList() {
+        return this.$store.getters['articles/getList']
+      },
+      locationList() {
+        return this.$store.getters['articles/getLocationList']
+      }
+    },
     watch: {
+      "product.COD_BARRAS": function (val) {
+        this.checkProduct(val)
+      },
+
       product: {
         handler(val) {
-          this.product.cant_final = val.cant_bultos * val.bultos
+          if (val.CANTIDAD) {
+            this.product.CANT_CONTEO = val.UNI_X_BULTO * val.CANTIDAD
+          } else {
+            this.product.CANT_CONTEO = 0
+          }
         },
         deep: true
       }
