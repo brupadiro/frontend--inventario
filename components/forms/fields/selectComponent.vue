@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex flex-column">
-    <label class="font-weight-regular mb-2 text-uppercase text-subtitle-2" :class="labelColor">{{label}}</label>
-    <v-select chips class="rounded-lg" solo ref="input" hide-details v-model="fieldValue" @focus="checkFocus()" v-bind="props">
+    <label class="font-weight-regular  text-uppercase text-subtitle-2" :class="labelColor">{{label}}</label>
+    <v-select chips class="rounded-lg mt-2" height="55" solo ref="input" hide-details v-model="fieldValue" @focus="checkFocus()" v-bind="props">
       <template v-slot:prepend-inner>
         <slot></slot>
       </template>

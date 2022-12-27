@@ -12,14 +12,19 @@ $main-font: 'Montserrat';
 body {
 
   .v-application {
-
-    .background-gradient{
+    .btn-count.v-btn.v-btn--disabled.primary{
+      background: #1976d2!important;
+    }
+.background-gradient{
         background: #202020 !important
     }
     input{
       font-family: $main-font!important;
       color:black!important
     } 
+    .v-text-field--filled{
+      background: #f8f9fc29!important;
+    }
     .secondary{
       background:linear-gradient(245deg, #311b92, #673ab7)!important;
     }

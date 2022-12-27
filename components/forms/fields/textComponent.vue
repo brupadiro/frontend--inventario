@@ -1,18 +1,28 @@
 <template>
   <div class="d-flex flex-column">
     <label class="font-weight-regular mb-2 text-uppercase text-subtitle-2" :class="labelColor">{{label}}</label>
-    <v-text-field height="55" class="rounded-lg font-weight-regular" solo ref="input"  hide-details v-model="fieldValue" @focus="checkFocus()" v-bind="props">
+    <v-text-field height="55" class="rounded-lg font-weight-regular" solo ref="input" @keyup.enter="enterEvent()" :filled="disabled" :readonly="disabled || readonly" hide-details v-model="fieldValue" @focus="checkFocus()" v-bind="props">
       <template v-slot:prepend-inner>
         <slot></slot>
       </template>
+      <template v-slot:append>
+        <img v-if="disabled" src="/icons/check.png" width="30">
+      </template>
+
     </v-text-field>
   </div>
 </template>
 
 <script>
+  import enterMixin from '~/plugins/enterMixin.js'
   export default {
+    mixins:[enterMixin],
     inheritAttrs: false,
     props: {
+      readonly:{
+        type: Boolean,
+        default: false
+      },
       value: null,
       "label-color":{
         type: String,

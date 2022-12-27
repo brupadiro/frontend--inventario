@@ -4,9 +4,7 @@
       <v-img contain height="60" src="/logo.png" alt="logo"></v-img>
     </v-app-bar>
     <v-main>
-      <v-container>
         <Nuxt />
-      </v-container>
     </v-main>
   </v-app>
 </template>
