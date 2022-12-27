@@ -126,7 +126,7 @@
     <barcodeReaderComponent @decode="product.deposit = $event" v-model="openModalBarcodeDeposit">
     </barcodeReaderComponent>
 
-    <v-dialog v-model="modalUpdateDate">
+    <v-dialog v-model="modalUpdateDate" persistent>
       <v-card>
         <v-card-title class="font-weight-bold">
           Actualice la fecha
@@ -168,7 +168,7 @@
       </v-card>
     </v-dialog>
 
-    <v-dialog v-model="openModalConfirmacion">
+    <v-dialog v-model="openModalConfirmacion" persistent>
       <v-card>
         <v-card-title class="font-weight-bold">
           Confirmar el conteo
@@ -219,7 +219,7 @@
 
 
 
-    <v-dialog v-model="openModalUbication">
+    <v-dialog v-model="openModalUbication" persistent>
       <v-card>
         <v-card-title class="font-weight-bold">
           Aviso&nbsp;
@@ -244,7 +244,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <v-dialog v-model="openNoArticlesModal">
+    <v-dialog v-model="openNoArticlesModal" persistent>
       <v-card>
         <v-card-title class="font-weight-bold">
           Aviso&nbsp;
@@ -266,7 +266,7 @@
     </v-dialog>
 
 
-    <v-dialog v-model="openModalConteo">
+    <v-dialog v-model="openModalConteo" persistent>
       <v-card>
         <v-card-title class="font-weight-bold">
           Aviso&nbsp;
