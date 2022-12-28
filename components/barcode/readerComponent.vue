@@ -47,6 +47,7 @@
     },
     methods: {
       onDecode(result) {
+        console.log(result)
         this.$emit('decode', result)
         this.$emit('input', false)
       }

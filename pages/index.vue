@@ -36,7 +36,7 @@
                   </v-col>
 
                   <v-col class="col-12 col-md-5">
-                    <formsFieldsTextButtonComponent :disabled="product.UBICACION_PARTIDA == ''"
+                    <formsFieldsTextButtonComponent :disabled="product.UBICACION_PARTIDA == ''" :value="product.COD_BARRAS"
                       :handler="updateBarcodeProduct" background-color="white" label-color="white--text"
                       @enter="setCodigobarras($event)" label="Código de barras" required>
                       <img src="/icons/barcode.png" width="30">
@@ -127,7 +127,7 @@
 
       </v-col>
     </v-row>
-    <barcodeReaderComponent @decode="checkProduct($event)" v-model="openModalBarcodeProduct"></barcodeReaderComponent>
+    <barcodeReaderComponent @decode="setCodigobarras" v-model="openModalBarcodeProduct"></barcodeReaderComponent>
     <barcodeReaderComponent @decode="product.deposit = $event" v-model="openModalBarcodeDeposit">
     </barcodeReaderComponent>
 

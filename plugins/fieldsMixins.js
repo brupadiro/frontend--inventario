@@ -23,6 +23,7 @@ export default {
   methods: {
     setCodigobarras(valor) {
         this.product = {}
+        console.log(valor)
       this.product.COD_BARRAS = valor
       this.checkProduct(valor)
     },
