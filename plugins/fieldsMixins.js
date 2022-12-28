@@ -15,14 +15,15 @@ export default {
       },
       user: {
         USUARIO: '',
-        DEPOSITO: ''
+        DEP: ''
       },
+      ubicacionError: false
     }
   },
   methods: {
     setCodigobarras(valor) {
         this.product = {}
-      this.product.codigobarras = valor
+      this.product.COD_BARRAS = valor
       this.checkProduct(valor)
     },
     setSku(valor) {
@@ -35,7 +36,7 @@ export default {
       this.product.deposito = valor
     },
     setUbicacionArti(valor) {
-      this.product.UBICACION_ARTI = valor
+      this.UBICACION_ARTI = valor
     },
     setFechavenc(valor) {
       this.product.fechavenc = valor
@@ -65,6 +66,22 @@ export default {
         localStorage.setItem('user', JSON.stringify(val))
       },
       deep:true
+    },
+    "UBICACION_ARTI":{
+      handler(val){
+        const checkLocation = this.locationList.find(item=>item == val)
+        if(checkLocation == undefined) {
+          this.ubicacionError = true
+          this.$toast.error('Ubicación no válida',{
+            duration: 2000,
+            containerClass: 'toast-container',
+          })
+        } else {
+          this.ubicacionError = false
+        }
+      }
     }
+  },
+  computed:{
   }
 }

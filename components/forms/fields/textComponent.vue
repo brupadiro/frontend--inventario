@@ -1,12 +1,12 @@
 <template>
   <div class="d-flex flex-column">
     <label class="font-weight-regular mb-2 text-uppercase text-subtitle-2" :class="labelColor">{{label}}</label>
-    <v-text-field height="55" class="rounded-lg font-weight-regular" solo ref="input" @keyup.enter="enterEvent()" :filled="disabled" :readonly="disabled || readonly" hide-details v-model="fieldValue" @focus="checkFocus()" v-bind="props">
+    <v-text-field height="55" class="rounded-lg font-weight-regular" solo ref="input" @keyup.enter="enterEvent()" :rules="rules.required" :filled="disabled" :readonly="(disabled && !editable) || readonly" hide-details v-model="fieldValue" @focus="checkFocus()" v-bind="props">
       <template v-slot:prepend-inner>
         <slot></slot>
       </template>
       <template v-slot:append>
-        <img v-if="disabled" src="/icons/check.png" width="30">
+        <img v-if="disabled && !editable" src="/icons/check.png" width="30">
       </template>
 
     </v-text-field>
@@ -19,6 +19,10 @@
     mixins:[enterMixin],
     inheritAttrs: false,
     props: {
+      editable:{
+        type: Boolean,
+        default: false
+      },
       readonly:{
         type: Boolean,
         default: false
@@ -35,6 +39,9 @@
     },
     data() {
       return {
+        rules:{
+          required: [v => !!v || 'Campo requerido'],
+        },
         focused:false,
         fieldValue:this.value,
       }

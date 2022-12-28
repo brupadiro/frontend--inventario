@@ -38,6 +38,7 @@ export const actions = {
     return data
   },
   async saveLog(context,article) {
+    console.log(article)
     const {
       data: data
     } = await this.$axios.post(`/articulos/saveLog/`,{
@@ -46,6 +47,14 @@ export const actions = {
     return data
   },
 
+  async saveAjuste(context,article) {
+    const {
+      data: data
+    } = await this.$axios.post(`/articulos/saveAjuste/`,{
+      data:article
+    })
+    return data
+  },
 
 }
 

@@ -11,108 +11,113 @@
             </v-card-title>
             <v-divider></v-divider>
             <v-card-text>
-              <v-row>
-                <v-col class="col-md-2 col-12">
-                  <formsFieldsTextComponent background-color="white" label-color="white--text" :value="user.USUARIO"  @enter="setUser($event)"
-                    label="Usuario" required>
-                    <img src="/icons/account.png" width="30">
-                  </formsFieldsTextComponent>
-                </v-col>
-                <v-col class="col-md-2 col-12">
-                  <formsFieldsSelectComponent
-                    :items="['DEP','DUM','FUL','MAL','MAY','MEL','NDT','PAT','PRE','RUP','VEN']"
-                    @enter="setDepo($event)"
-                    background-color="white" label-color="white--text" v-model="user.DEPOSITO" label="Depósito"
-                    required>
-                    <img src="/icons/barcode-scanner.png" width="30">
-                  </formsFieldsSelectComponent>
-                </v-col>
-                <v-col class="col-md-4 col-12">
-                  <formsFieldsTextComponent background-color="white" label-color="white--text"  @enter="setUbicacionArti($event)"
-                    label="Ubicacion" required>
-                    <img src="/icons/pin.png" width="30">
-                  </formsFieldsTextComponent>
-                </v-col>
+              <v-form ref="form">
 
-                <v-col class="col-12 col-md-5">
-                  <formsFieldsTextButtonComponent :disabled="UBICACION_ARTI == ''"  :handler="updateBarcodeProduct"
-                    background-color="white" label-color="white--text" @enter="setCodigobarras($event)"
-                    label="Código de barras" required>
-                    <img src="/icons/barcode.png" width="30">
-                    <template v-slot:buttonicon>
-                      <img src="/icons/barcode-scanner.png" width="30">
-                    </template>
-                  </formsFieldsTextButtonComponent>
-                </v-col>
-
-                <v-col class="col-12 col-md-2">
-                  <formsFieldsTextComponent background-color="white" readonly label-color="white--text"
-                    v-model="product.COD_ARTICULO" label="Cod. del producto" required>
-                    <img src="/icons/code.png" width="30">
-                  </formsFieldsTextComponent>
-                </v-col>
-
-                <v-col class="col-12 col-md-5">
-                  <formsFieldsTextComponent background-color="white" readonly label-color="white--text"
-                    v-model="product.DESCRIP_ARTI" :counter="100" label="Descripcion del producto" required>
-                    <img src="/icons/product.png" width="30">
-                  </formsFieldsTextComponent>
-                </v-col>
-
-                <v-col class="col-12 col-md-5">
-                  <formsFieldsTextComponent background-color="white" label-color="white--text"
-                    v-model="product.FECHA_VENCI" label="Fecha de vencimiento" readonly>
-                    <img src="/icons/calendar.png" width="30">
-                  </formsFieldsTextComponent>
-                  <div v-if="errorFechaVenc" class="red--text">
-                    {{ errorfechaVencText }}
-                    <v-btn color="info" @click="modalUpdateDate=true" class="fonti-weight-regular black--text">
-                      Actualizar fecha de vencimiento</v-btn>
-                  </div>
-                </v-col>
-
-                <v-col class="col-12 py-4">
-                  <label class="font-weight-regular mb-2 text-uppercase text-subtitle-2 white--text">TIPO DE
-                    CUENTA</label>
-
-                  <v-btn-toggle class="elevation-3 rounded-lg" color="primary white--text"
-                    style="width:100%">
-                    <v-btn width="33%" active-class="primary"  disabled class="font-weight-bold btn-count" :class="(product.cuenta == 1)?'primary':''">
-                      <img src="/icons/1.png" width="30">
-                    </v-btn>
-                    <v-btn width="33%" active-class="primary" disabled class="font-weight-bold btn-count" :class="(product.cuenta == 2)?'primary':''">
-                      <img src="/icons/2.png" width="30">
-                    </v-btn>
-                    <v-btn width="33%" active-class="primary" disabled class="font-weight-bold btn-count" :class="(product.cuenta == 3)?'primary':''">
-                      <img src="/icons/3.png" width="30">
-                    </v-btn>
-                  </v-btn-toggle>
-                </v-col>
-
-                <v-col class="col-12 col-md-3">
-                  <formsFieldsTextComponent background-color="white" label-color="white--text" v-model="product.CANTIDAD"
-                    label="Cantidad de bultos" required>
-                    <img src="/icons/staging.png" width="30">
-                  </formsFieldsTextComponent>
-                </v-col>
-
-                <v-col class="col-12 col-md-3">
-                  <formsFieldsTextComponent background-color="white" label-color="white--text"
-                    v-model="product.UNI_X_BULTO" label="Cantidad por bulto" required>
-                    <img src="/icons/products.png" width="30">
-                  </formsFieldsTextComponent>
-                </v-col>
-
-                <v-col class="col-12 col-md-3">
-                  <formsFieldsTextComponent background-color="white" readonly label-color="white--text"
-                    v-model="product.CANT_CONTEO" label="Cantidad Final" required>
-                    <img src="/icons/equal.png" width="30">
-                  </formsFieldsTextComponent>
-                </v-col>
-                <v-col class="col-md-3 col-12">
-                  <v-btn block color="primary font-weight-bold rounded-lg mt-7" height="55" @click="updateConteo();">Enviar</v-btn>
+                <v-row>
+                  <v-col class="col-md-2 col-12">
+                    <formsFieldsTextComponent background-color="white" label-color="white--text" :value="user.USUARIO"
+                      @enter="setUser($event)" label="Usuario" required>
+                      <img src="/icons/account.png" width="30">
+                    </formsFieldsTextComponent>
                   </v-col>
-              </v-row>
+                  <v-col class="col-md-2 col-12">
+                    <formsFieldsSelectComponent
+                      :items="['DEP','DUM','FUL','MAL','MAY','MEL','NDT','PAT','PRE','RUP','VEN']"
+                      @enter="setDepo($event)" background-color="white" label-color="white--text" v-model="user.DEP"
+                      label="Depósito" required>
+                      <img src="/icons/barcode-scanner.png" width="30">
+                    </formsFieldsSelectComponent>
+                  </v-col>
+                  <v-col class="col-md-4 col-12">
+                    <formsFieldsTextComponent background-color="white" label-color="white--text"
+                      @enter="setUbicacionArti" :editable="ubicacionError" label="Ubicacion" required>
+                      <img src="/icons/pin.png" width="30">
+                    </formsFieldsTextComponent>
+                  </v-col>
+
+                  <v-col class="col-12 col-md-5">
+                    <formsFieldsTextButtonComponent :disabled="product.UBICACION_PARTIDA == ''"
+                      :handler="updateBarcodeProduct" background-color="white" label-color="white--text"
+                      @enter="setCodigobarras($event)" label="Código de barras" required>
+                      <img src="/icons/barcode.png" width="30">
+                      <template v-slot:buttonicon>
+                        <img src="/icons/barcode-scanner.png" width="30">
+                      </template>
+                    </formsFieldsTextButtonComponent>
+                  </v-col>
+
+                  <v-col class="col-12 col-md-2">
+                    <formsFieldsTextComponent background-color="white" readonly label-color="white--text"
+                      v-model="product.COD_ARTICULO" label="Cod. del producto" required>
+                      <img src="/icons/code.png" width="30">
+                    </formsFieldsTextComponent>
+                  </v-col>
+
+                  <v-col class="col-12 col-md-5">
+                    <formsFieldsTextComponent background-color="white" readonly label-color="white--text"
+                      v-model="product.DESCRIP_ARTI" :counter="100" label="Descripcion del producto" required>
+                      <img src="/icons/product.png" width="30">
+                    </formsFieldsTextComponent>
+                  </v-col>
+
+                  <v-col class="col-12 col-md-5">
+                    <formsFieldsTextComponent background-color="white" label-color="white--text"
+                      v-model="product.FECHA_VENCI" label="Fecha de vencimiento" readonly>
+                      <img src="/icons/calendar.png" width="30">
+                    </formsFieldsTextComponent>
+                    <div v-if="errorFechaVenc" class="red--text">
+                      {{ errorfechaVencText }}
+                      <v-btn color="info" @click="modalUpdateDate=true" class="fonti-weight-regular black--text">
+                        Actualizar fecha de vencimiento</v-btn>
+                    </div>
+                  </v-col>
+
+                  <v-col class="col-12 py-4">
+                    <label class="font-weight-regular mb-2 text-uppercase text-subtitle-2 white--text">TIPO DE
+                      CUENTA</label>
+
+                    <v-btn-toggle class="elevation-3 rounded-lg" color="primary white--text" style="width:100%">
+                      <v-btn width="33%" active-class="primary" disabled class="font-weight-bold btn-count"
+                        :class="(product.cuenta == 1)?'primary':''">
+                        <img src="/icons/1.png" width="30">
+                      </v-btn>
+                      <v-btn width="33%" active-class="primary" disabled class="font-weight-bold btn-count"
+                        :class="(product.cuenta == 2)?'primary':''">
+                        <img src="/icons/2.png" width="30">
+                      </v-btn>
+                      <v-btn width="33%" active-class="primary" disabled class="font-weight-bold btn-count"
+                        :class="(product.cuenta == 3)?'primary':''">
+                        <img src="/icons/3.png" width="30">
+                      </v-btn>
+                    </v-btn-toggle>
+                  </v-col>
+
+                  <v-col class="col-12 col-md-3">
+                    <formsFieldsTextComponent background-color="white" label-color="white--text"
+                      v-model="product.CANTIDAD" label="Cantidad de bultos" required>
+                      <img src="/icons/staging.png" width="30">
+                    </formsFieldsTextComponent>
+                  </v-col>
+
+                  <v-col class="col-12 col-md-3">
+                    <formsFieldsTextComponent background-color="white" label-color="white--text"
+                      v-model="product.UNI_X_BULTO" label="Cantidad por bulto" required>
+                      <img src="/icons/products.png" width="30">
+                    </formsFieldsTextComponent>
+                  </v-col>
+
+                  <v-col class="col-12 col-md-3">
+                    <formsFieldsTextComponent background-color="white" readonly label-color="white--text"
+                      v-model="product.CANT_CONTEO" label="Cantidad Final" required>
+                      <img src="/icons/equal.png" width="30">
+                    </formsFieldsTextComponent>
+                  </v-col>
+                  <v-col class="col-md-3 col-12">
+                    <v-btn block color="primary font-weight-bold rounded-lg mt-7" height="55" @click="updateConteo();">
+                      Enviar</v-btn>
+                  </v-col>
+                </v-row>
+              </v-form>
 
             </v-card-text>
             <v-card-actions>
@@ -137,15 +142,15 @@
         <v-card-subtitle>Seleccione una</v-card-subtitle>
         <v-card-text class="py-2">
           <v-list>
-            <v-list-item v-for="fechavenc in this.product.fechavenc" :key="id">
+            <v-list-item v-for="fechavenc in this.fechavencs" :key="id">
               <v-list-item-content>
                 <v-list-item-title class="font-weight-bold">
-                  {{fechavenc}}
+                  {{formatDate(fechavenc)}}
                 </v-list-item-title>
               </v-list-item-content>
               <v-list-item-action>
-                <v-btn color="primary" fab small @click="newFechaVenc = fechavenc">
-                  <img src="/icons/question.png" width="30" v-if="newFechaVenc != fechavenc">
+                <v-btn color="primary" fab small @click="product.FECHA_VENCI = fechavenc">
+                  <img src="/icons/question.png" width="30" v-if="product.FECHA_VENCI != fechavenc">
                   <img src="/icons/check.png" width="30" v-else>
                 </v-btn>
               </v-list-item-action>
@@ -279,15 +284,29 @@
         </v-card-text>
         <v-card-text class="py-2" v-else-if="errorConteo && this.product.cuenta <4">
           La cantidad final no coincide con la cantidad previamente registrada, realice nuevamente el conteo
+          <v-row>
+            <v-col class="col-12">
+              <formsFieldsTextComponent background-color="white" label-color="white--text" v-model="product.CANTIDAD"
+                label="Cantidad de bultos" required>
+                <img src="/icons/staging.png" width="30">
+              </formsFieldsTextComponent>
+            </v-col>
+          </v-row>
         </v-card-text>
         <v-card-text class="py-2" v-else>
           La cantidad final no coincide con la cantidad previamente registrada, Realizando ajuste en sistema
         </v-card-text>
         <v-divider></v-divider>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="primary" @click="openModalConteo = false">Aceptar</v-btn>
+        <v-card-actions v-if="errorConteo && this.product.cuenta <4">
+          <v-btn block color="primary" @click="()=>{
+            this.openModalConteo = false;
+            this.updateConteo()
+          }">Enviar nuevo conteo</v-btn>
         </v-card-actions>
+        <v-card-actions v-else>
+          <v-btn block color="primary" @click="openModalConteo = false">Aceptar</v-btn>
+        </v-card-actions>
+
       </v-card>
     </v-dialog>
 
@@ -302,7 +321,7 @@
   import moment from 'moment'
   export default {
     name: 'IndexPage',
-    mixins:[fieldsMixins],
+    mixins: [fieldsMixins],
     data: () => ({
       openModalBarcodeProduct: false,
       openModalBarcodeDeposit: false,
@@ -311,6 +330,7 @@
       openModalConteo: false,
       openNoArticlesModal: false,
       updateSobrante: false,
+      fechavencs: [],
       date: null,
       menu: false,
       valid: false,
@@ -329,7 +349,7 @@
     },
     methods: {
       checkUser() {
-        if(localStorage.getItem('user') != null) {
+        if (localStorage.getItem('user') != null) {
           this.user = JSON.parse(localStorage.getItem('user'))
         }
       },
@@ -337,20 +357,24 @@
         localStorage.removeItem('user')
         this.user = {}
         this.product = {
-          cuenta:1
+          cuenta: 1
         }
+      },
+      formatDate(date) {
+        return moment(date).add(1, 'days').format('DD/MM/YYYY')
       },
       async checkProduct(barcode) {
         await this.$store.dispatch('articles/find', barcode)
         let fechaVencs = this.articlesList.filter((item) => item.FECHA_VENCI != null).map((item) => item.FECHA_VENCI)
+        fechaVencs = [...new Set(fechaVencs)]
         let product = null
-        if(this.articlesList.length> 0)
+        if (this.articlesList.length > 0)
           product = JSON.parse(JSON.stringify(this.articlesList[0]))
         if (product) {
 
-          const extraInfo = await this.$store.dispatch('articles/findExtraInfo', product.COD_ARTICULO)
+          const extraInfo = await this.$store.dispatch('articles/findExtraInfo', barcode)
           console.log(extraInfo)
-          product.UNI_X_BULTO = extraInfo.data.UNI_X_BULTO
+          product.UNI_X_BULTO = extraInfo ?.data ?.UNI_X_BULTO ?? 1
           product.FECHA_VENCI = fechaVencs[0]
           this.product = product
           this.product.cuenta = 1
@@ -361,6 +385,7 @@
           var fechavenc = fechaVencs[0]
           const fechaVencBefore = moment(fechavenc, 'DD/MM/YYYY').isBefore(moment())
           if (fechaVencs.length > 1) {
+            this.fechavencs = [...new Set(fechaVencs)]
             this.errorFechaVenc = true
             this.errorfechaVencText = 'Hay mas de una fecha de vencimiento'
             return
@@ -400,18 +425,44 @@
         this.openModalBarcodeDeposit = true
       },
       updateConteo() {
+        if(!this.$refs.form.validate()) {
+          this.$toast.error('Rellene todos los campos',{
+            duration: 2000,
+            containerClass: 'toast-container',
+          })
+          return
+        }
         this.openModalConteo = true
+        this.errorConteo = false
+        console.log(this.user)
         if (this.product.CANT_CONTEO != this.product.CANT_PEND) {
           this.errorConteo = true
           this.product.cuenta = parseInt(this.product.cuenta) + 1
           if (this.product.cuenta > 3) {
-            this.$store.dispatch('articles/saveLog', this.product)
-            this.product = {}
+            this.$store.dispatch('articles/saveAjuste', this.product)
+            this.$store.dispatch('articles/saveLog', {
+              ...this.product,
+              ...this.user,
+              ULTIMO_REG: 'Si'
+            })
+            //this.product = {}
+            return
           }
         } else {
-          this.$store.dispatch('articles/saveLog', this.product)
-          this.product = {}
+          this.$store.dispatch('articles/saveLog', {
+            ...this.product,
+            ...this.user,
+            ULTIMO_REG: 'Si'
+          })
+          //this.product = {}
+          return
         }
+        this.$store.dispatch('articles/saveLog', {
+          ...this.product,
+          ...this.user,
+          ULTIMO_REG: 'Si'
+        })
+
       },
       save(date) {
         this.$refs.menu.save(date)
@@ -443,6 +494,9 @@
           }
         },
         deep: true
+      },
+      newFechaVenc(val) {
+        this.product.FECHA_VENCI = val
       }
     }
   }
