@@ -55,6 +55,14 @@ export const actions = {
     })
     return data
   },
+  async saveSobrante(context,article) {
+    const {
+      data: data
+    } = await this.$axios.post(`/articulos/saveSobrante/`,{
+      data:article
+    })
+    return data
+  },
 
 }
 

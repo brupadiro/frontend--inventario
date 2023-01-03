@@ -12,37 +12,28 @@
             <v-divider></v-divider>
             <v-card-text>
               <v-form ref="form">
-
                 <v-row>
                   <v-col class="col-md-2 col-12">
-                    <formsFieldsTextComponent background-color="white" label-color="white--text" :value="user.USUARIO"
-                      @enter="setUser($event)" label="Usuario" required>
+                    <formsFieldsTextComponent background-color="white" label-color="white--text" :value="user.USUARIO" @enter="setUser($event)" label="Usuario" required>
                       <img src="/icons/account.png" width="30">
                     </formsFieldsTextComponent>
                   </v-col>
                   <v-col class="col-md-2 col-12">
-                    <formsFieldsSelectComponent
-                      :items="['DEP','DUM','FUL','MAL','MAY','MEL','NDT','PAT','PRE','RUP','VEN']"
-                      @enter="setDepo($event)" background-color="white" label-color="white--text" v-model="user.DEP"
-                      label="Depósito" required>
+                    <formsFieldsSelectComponent :items="['DEP','DUM','FUL','MAL','MAY','MEL','NDT','PAT','PRE','RUP','VEN']" @enter="setDepo($event)" background-color="white" label-color="white--text" v-model="user.DEP" label="Depósito" required>
                       <img src="/icons/barcode-scanner.png" width="30">
                     </formsFieldsSelectComponent>
                   </v-col>
                   <v-col class="col-md-4 col-12">
-                    <formsFieldsTextComponent background-color="white" label-color="white--text"
-                      @enter="setUbicacionArti" :editable="ubicacionError" label="Ubicacion" required>
+                    <formsFieldsTextComponent background-color="white" label-color="white--text" :value="UBICACION_ARTI" @enter="setUbicacionArti" :editable="ubicacionError" label="Ubicacion" required>
                       <img src="/icons/pin.png" width="30">
                     </formsFieldsTextComponent>
                   </v-col>
-
                   <v-col class="col-12 col-md-5">
-                    <formsFieldsTextButtonComponent :disabled="product.UBICACION_PARTIDA == ''" :value="product.COD_BARRAS"
-                      :handler="updateBarcodeProduct" background-color="white" label-color="white--text"
-                      @enter="setCodigobarras($event)" label="Código de barras" required>
+                    <formsFieldsTextButtonComponent :disabled="UBICACION_ARTI == ''" :value="product.COD_BARRAS" :handler="updateBarcodeProduct" background-color="white" label-color="white--text" @enter="setCodigobarras($event)" label="Código de barras" required>
                       <img src="/icons/barcode.png" width="30">
                       <template v-slot:buttonicon>
-                        <img src="/icons/barcode-scanner.png" width="30">
-                      </template>
+                            <img src="/icons/barcode-scanner.png" width="30">
+</template>
                     </formsFieldsTextButtonComponent>
                   </v-col>
 
@@ -61,8 +52,7 @@
                   </v-col>
 
                   <v-col class="col-12 col-md-5">
-                    <formsFieldsTextComponent background-color="white" label-color="white--text"
-                      v-model="product.FECHA_VENCI" label="Fecha de vencimiento" readonly>
+                    <formsFieldsTextComponent background-color="white" label-color="white--text" :value="setFechaVenc()" label="Fecha de vencimiento" readonly>
                       <img src="/icons/calendar.png" width="30">
                     </formsFieldsTextComponent>
                     <div v-if="errorFechaVenc" class="red--text">
@@ -77,15 +67,19 @@
                       CUENTA</label>
 
                     <v-btn-toggle class="elevation-3 rounded-lg" color="primary white--text" style="width:100%">
-                      <v-btn width="33%" active-class="primary" disabled class="font-weight-bold btn-count"
+                      <v-btn width="25%" active-class="primary" disabled class="font-weight-bold btn-count"
+                        :class="(product.cuenta == 0)?'primary':''">
+                          <img src="/icons/0.png" width="30">
+                      </v-btn>
+                      <v-btn width="25%" active-class="primary" disabled class="font-weight-bold btn-count"
                         :class="(product.cuenta == 1)?'primary':''">
                         <img src="/icons/1.png" width="30">
                       </v-btn>
-                      <v-btn width="33%" active-class="primary" disabled class="font-weight-bold btn-count"
+                      <v-btn width="25%" active-class="primary" disabled class="font-weight-bold btn-count"
                         :class="(product.cuenta == 2)?'primary':''">
                         <img src="/icons/2.png" width="30">
                       </v-btn>
-                      <v-btn width="33%" active-class="primary" disabled class="font-weight-bold btn-count"
+                      <v-btn width="25%" active-class="primary" disabled class="font-weight-bold btn-count"
                         :class="(product.cuenta == 3)?'primary':''">
                         <img src="/icons/3.png" width="30">
                       </v-btn>
@@ -100,7 +94,7 @@
                   </v-col>
 
                   <v-col class="col-12 col-md-3">
-                    <formsFieldsTextComponent background-color="white" label-color="white--text"
+                    <formsFieldsTextComponent background-color="white" type="number" label-color="white--text"
                       v-model="product.UNI_X_BULTO" label="Cantidad por bulto" required>
                       <img src="/icons/products.png" width="30">
                     </formsFieldsTextComponent>
@@ -108,7 +102,19 @@
 
                   <v-col class="col-12 col-md-3">
                     <formsFieldsTextComponent background-color="white" readonly label-color="white--text"
-                      v-model="product.CANT_CONTEO" label="Cantidad Final" required>
+                      v-model="product.CANT_CONTEO" label="Cantidad Cuenta" required>
+                      <img src="/icons/equal.png" width="30">
+                    </formsFieldsTextComponent>
+                  </v-col>
+                  <v-col class="col-md-3 col-12">
+                    <v-btn block color="success darken-1" class="font-weight-bold rounded-lg mt-7" height="55" @click="setCantExtra();">
+                      Agregar cuenta</v-btn>
+                  </v-col>
+                  <v-col class="col-md-3 col-12"></v-col>
+                  <v-col class="col-md-3 col-12"></v-col>
+                  <v-col class="col-12 col-md-3">
+                    <formsFieldsTextComponent background-color="white" readonly label-color="white--text"
+                      :value="cantFinal" label="Cantidad Final" required>
                       <img src="/icons/equal.png" width="30">
                     </formsFieldsTextComponent>
                   </v-col>
@@ -116,7 +122,10 @@
                     <v-btn block color="primary font-weight-bold rounded-lg mt-7" height="55" @click="updateConteo();">
                       Enviar</v-btn>
                   </v-col>
+
+
                 </v-row>
+                
               </v-form>
 
             </v-card-text>
@@ -215,7 +224,7 @@
         </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
-          <v-btn outlined @click="openModalConfirmacion = false">Salir</v-btn>
+          <v-btn outlined @click="openModalConfirmacion = false;focus()">Salir</v-btn>
           <v-spacer></v-spacer>
           <v-btn color="primary" @click="updateConteo()">Guardar</v-btn>
         </v-card-actions>
@@ -239,7 +248,8 @@
         <v-card-actions>
           <v-btn outlined @click="()=>{
             this.openModalUbication = false;
-            this.clearFields()
+            this.clearFields();
+            this.focus();
           }">Salir</v-btn>
           <v-spacer></v-spacer>
           <v-btn color="primary" @click="()=>{
@@ -258,14 +268,20 @@
         </v-card-title>
         <v-divider></v-divider>
         <v-card-text class="py-2">
-          El producto no tiene partidas pendientes
+          El producto pertenece a la ubicacion pero no tiene cantidades pendientes, desea guardar el sobrante?
         </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
           <v-btn outlined @click="()=>{
             this.openNoArticlesModal = false;
+            this.focus();
           }">Salir</v-btn>
           <v-spacer></v-spacer>
+
+          <v-btn color="primary" @click="()=>{
+            openNoArticlesModal = false;
+            updateSobrante = true
+          }">Guardar</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -284,6 +300,7 @@
         </v-card-text>
         <v-card-text class="py-2" v-else-if="errorConteo && this.product.cuenta <4">
           La cantidad final no coincide con la cantidad previamente registrada, realice nuevamente el conteo
+          <!--
           <v-row>
             <v-col class="col-12">
               <formsFieldsTextComponent background-color="white" label-color="white--text" v-model="product.CANTIDAD"
@@ -292,19 +309,22 @@
               </formsFieldsTextComponent>
             </v-col>
           </v-row>
+
+
+          -->
         </v-card-text>
         <v-card-text class="py-2" v-else>
           La cantidad final no coincide con la cantidad previamente registrada, Realizando ajuste en sistema
         </v-card-text>
         <v-divider></v-divider>
-        <v-card-actions v-if="errorConteo && this.product.cuenta <4">
+        <v-card-actions v-if="false">
           <v-btn block color="primary" @click="()=>{
             this.openModalConteo = false;
             this.updateConteo()
           }">Enviar nuevo conteo</v-btn>
         </v-card-actions>
         <v-card-actions v-else>
-          <v-btn block color="primary" @click="openModalConteo = false">Aceptar</v-btn>
+          <v-btn block color="primary" @click="openModalConteo = false;focus();">Aceptar</v-btn>
         </v-card-actions>
 
       </v-card>
@@ -330,11 +350,11 @@
       openModalConteo: false,
       openNoArticlesModal: false,
       updateSobrante: false,
+      cantExtra: 0,
       fechavencs: [],
       date: null,
       menu: false,
       valid: false,
-      UBICACION_ARTI: '',
       usuario: '',
       errorFechaVenc: false,
       errorfechaVencText: '',
@@ -352,13 +372,30 @@
         if (localStorage.getItem('user') != null) {
           this.user = JSON.parse(localStorage.getItem('user'))
         }
+        if (localStorage.getItem('ubicacion') != null) {
+          this.UBICACION_ARTI = JSON.parse(localStorage.getItem('ubicacion'))
+        }
+
+
+      },
+      setCantExtra() {
+        this.cantExtra += this.product.CANT_CONTEO
+        this.product = {
+          CANT_CONTEO: 0,
+          UNI_X_BULTO: 0
+        }
       },
       cleanStorage() {
         localStorage.removeItem('user')
+        localStorage.removeItem('ubicacion')
         this.user = {}
         this.product = {
-          cuenta: 1
+          cuenta: 0
         }
+        this.UBICACION_ARTI = ""
+      },
+      focus() {
+        this.$root.$emit('focus')
       },
       formatDate(date) {
         return moment(date).add(1, 'days').format('DD/MM/YYYY')
@@ -371,14 +408,12 @@
         if (this.articlesList.length > 0)
           product = JSON.parse(JSON.stringify(this.articlesList[0]))
         if (product) {
-
           const extraInfo = await this.$store.dispatch('articles/findExtraInfo', barcode)
-          console.log(extraInfo)
           product.UNI_X_BULTO = extraInfo ?.data ?.UNI_X_BULTO ?? 1
           product.FECHA_VENCI = fechaVencs[0]
           this.product = product
-          this.product.cuenta = 1
-
+          this.product.COD_BARRAS = barcode
+          this.product.cuenta = 0
           if (this.product.UBICACION_PARTIDA != this.UBICACION_ARTI) {
             this.openModalUbication = true
           }
@@ -396,7 +431,6 @@
           } else if (product.VALIDAR_VENCI == "S") {
             this.errorFechaVenc = true
             this.errorfechaVencText = 'Es necesario validar la fecha de vencimiento'
-
           } else {
             this.errorFechaVenc = false
             this.errorfechaVencText = ''
@@ -425,8 +459,8 @@
         this.openModalBarcodeDeposit = true
       },
       updateConteo() {
-        if(!this.$refs.form.validate()) {
-          this.$toast.error('Rellene todos los campos',{
+        if (!this.$refs.form.validate()) {
+          this.$toast.error('Rellene todos los campos', {
             duration: 2000,
             containerClass: 'toast-container',
           })
@@ -434,35 +468,43 @@
         }
         this.openModalConteo = true
         this.errorConteo = false
-        console.log(this.user)
+        this.product.cuenta = parseInt(this.product.cuenta) + 1
+
+        const funcSaveLog = function(ULTIMO_REG,VM) {
+          VM.$store.dispatch('articles/saveLog', {
+            ...VM.product,
+            ...VM.user,
+            CANT_CONTEO:VM.cantFinal,
+            UBICACION_PARTIDA:VM.UBICACION_ARTI,
+            ULTIMO_REG: ULTIMO_REG,
+          })
+        }
+
+        if (this.updateSobrante) {
+          this.$store.dispatch('articles/saveSobrante', {
+            ...this.product,
+            CANT_CONTEO:this.cantFinal
+          })
+          funcSaveLog('Si',this)
+          return
+        }
         if (this.product.CANT_CONTEO != this.product.CANT_PEND) {
           this.errorConteo = true
-          this.product.cuenta = parseInt(this.product.cuenta) + 1
-          if (this.product.cuenta > 3) {
-            this.$store.dispatch('articles/saveAjuste', this.product)
-            this.$store.dispatch('articles/saveLog', {
-              ...this.product,
-              ...this.user,
-              ULTIMO_REG: 'Si'
-            })
-            //this.product = {}
+          if (this.product.cuenta == 3) {
+            this.$store.dispatch('articles/saveAjuste', {
+            ...this.product,
+            CANT_CONTEO:this.cantFinal
+          })
+            funcSaveLog('Si',this)
+            this.product = {}
             return
           }
         } else {
-          this.$store.dispatch('articles/saveLog', {
-            ...this.product,
-            ...this.user,
-            ULTIMO_REG: 'Si'
-          })
-          //this.product = {}
+          funcSaveLog('Si',this)
+          this.product = {}
           return
         }
-        this.$store.dispatch('articles/saveLog', {
-          ...this.product,
-          ...this.user,
-          ULTIMO_REG: 'Si'
-        })
-
+        funcSaveLog('No',this)
       },
       save(date) {
         this.$refs.menu.save(date)
@@ -474,6 +516,9 @@
       },
       locationList() {
         return this.$store.getters['articles/getLocationList']
+      },
+      cantFinal() {
+          return this.product.UNI_X_BULTO * this.product.CANTIDAD + this.cantExtra ?? 0
       }
     },
     watch: {
@@ -500,5 +545,4 @@
       }
     }
   }
-
 </script>

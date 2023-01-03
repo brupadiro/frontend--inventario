@@ -1,3 +1,4 @@
+import moment from 'moment'
 export default {
   data() {
     return {
@@ -8,11 +9,12 @@ export default {
         deposito: '',
         UBICACION_ARTI: '',
         fechavenc: '',
-        cuenta: '1',
+        cuenta:0,
         CANTIDAD: 0,
         UNI_X_BULTO: 0,
         CANT_CONTEO: 0,
       },
+      UBICACION_ARTI: '',
       user: {
         USUARIO: '',
         DEP: ''
@@ -23,9 +25,8 @@ export default {
   methods: {
     setCodigobarras(valor) {
         this.product = {}
-        console.log(valor)
-      this.product.COD_BARRAS = valor
       this.checkProduct(valor)
+      this.$forceUpdate()
     },
     setSku(valor) {
       this.product.sku = valor
@@ -59,6 +60,9 @@ export default {
     },
     clearFields(){
       this.product = {}
+    },
+    setFechaVenc(){
+      return moment(this.product.FECHA_VENCI).format('DD/MM/YYYY')
     }
   },
   watch:{
@@ -78,6 +82,7 @@ export default {
             containerClass: 'toast-container',
           })
         } else {
+          localStorage.setItem('ubicacion', JSON.stringify(val))
           this.ubicacionError = false
         }
       }
