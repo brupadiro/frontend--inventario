@@ -1,34 +1,38 @@
 <template>
   <div class="d-flex flex-column">
     <label class="font-weight-regular mb-2 text-uppercase text-subtitle-2" :class="labelColor">{{label}}</label>
-    <v-text-field height="55" class="rounded-lg font-weight-regular" solo ref="input" @keyup.enter="enterEvent()" :rules="rules.required" :filled="disabled" :readonly="(disabled && !editable) || readonly" hide-details v-model="fieldValue" @focus="checkFocus()" v-bind="props">
-      <template v-slot:prepend-inner>
-        <slot></slot>
-      </template>
-      <template v-slot:append>
-        <img v-if="disabled && !editable" src="/icons/check.png" width="30">
-      </template>
-
-    </v-text-field>
+    <v-input hide-details>
+      <v-text-field height="55" class="rounded-lg font-weight-regular" solo ref="input" @keyup.enter="enterEvent()"
+        :rules="rules.required" :filled="disabled" :readonly="(disabled && !editable) || readonly" hide-details
+        v-model="fieldValue" @focus="checkFocus()" v-bind="props">
+        <template v-slot:prepend-inner>
+          <slot></slot>
+        </template>
+        <template v-slot:append>
+          <img v-if="disabled && !editable" src="/icons/check.png" width="30">
+        </template>
+      </v-text-field>
+      <slot name="enterbutton" v-bind:enter="enterEvent"></slot>
+    </v-input>
   </div>
 </template>
 
 <script>
   import enterMixin from '~/plugins/enterMixin.js'
   export default {
-    mixins:[enterMixin],
+    mixins: [enterMixin],
     inheritAttrs: false,
     props: {
-      editable:{
+      editable: {
         type: Boolean,
         default: false
       },
-      readonly:{
+      readonly: {
         type: Boolean,
         default: false
       },
       value: null,
-      "label-color":{
+      "label-color": {
         type: String,
         default: "grey--text text--darken-4"
       },
@@ -39,18 +43,17 @@
     },
     data() {
       return {
-        rules:{
+        rules: {
           required: [v => !!v || 'Campo requerido'],
         },
-        focused:false,
-        fieldValue:this.value,
+        focused: false,
+        fieldValue: this.value,
       }
     },
-    updated() {
-    },
+    updated() {},
     methods: {
       checkFocus() {
-        if(!this.focused) {
+        if (!this.focused) {
           this.focused = true
         }
         this.$forceUpdate()
@@ -71,8 +74,8 @@
       },
     },
     computed: {
-      isValid(){
-        if(this.$refs.input) {
+      isValid() {
+        if (this.$refs.input) {
           return this.$refs.input.validate()
         }
       },
@@ -80,7 +83,10 @@
         const props = JSON.parse(JSON.stringify(this.$props))
         delete props.value
         delete props.label
-        return {...props,...this.$attrs}
+        return {
+          ...props,
+          ...this.$attrs
+        }
       }
     }
   }

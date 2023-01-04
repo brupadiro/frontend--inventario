@@ -16,6 +16,7 @@
         </slot>
         
       </v-btn>
+      <slot name="enterbutton"></slot>
     </v-input>
   </div>
 </template>

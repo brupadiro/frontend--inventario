@@ -14,26 +14,49 @@
               <v-form ref="form">
                 <v-row>
                   <v-col class="col-md-2 col-12">
-                    <formsFieldsTextComponent background-color="white" label-color="white--text" :value="user.USUARIO" @enter="setUser($event)" label="Usuario" required>
+                    <formsFieldsTextComponent background-color="white" label-color="white--text" :value="user.USUARIO"
+                      @enter="setUser($event)" label="Usuario" required>
                       <img src="/icons/account.png" width="30">
+                      <template v-slot:enterbutton="props">
+                        <v-btn x-small height="54" color="primary" class="ml-2 d-sm-none" @click="props.enter()">
+                          <img src="/icons/enter.png" width="30">
+                        </v-btn>
+                      </template>
                     </formsFieldsTextComponent>
                   </v-col>
                   <v-col class="col-md-2 col-12">
-                    <formsFieldsSelectComponent :items="['DEP','DUM','FUL','MAL','MAY','MEL','NDT','PAT','PRE','RUP','VEN']" @enter="setDepo($event)" background-color="white" label-color="white--text" v-model="user.DEP" label="Depósito" required>
+                    <formsFieldsSelectComponent
+                      :items="['DEP','DUM','FUL','MAL','MAY','MEL','NDT','PAT','PRE','RUP','VEN']"
+                      @enter="setDepo($event)" background-color="white" label-color="white--text" v-model="user.DEP"
+                      label="Depósito" required>
                       <img src="/icons/barcode-scanner.png" width="30">
+
                     </formsFieldsSelectComponent>
                   </v-col>
                   <v-col class="col-md-4 col-12">
-                    <formsFieldsTextComponent background-color="white" label-color="white--text" :value="UBICACION_ARTI" @enter="setUbicacionArti" :editable="ubicacionError" label="Ubicacion" required>
+                    <formsFieldsTextComponent background-color="white" label-color="white--text" :value="UBICACION_ARTI"
+                      @enter="setUbicacionArti" :editable="ubicacionError" label="Ubicacion" required>
                       <img src="/icons/pin.png" width="30">
+                      <template v-slot:enterbutton="props">
+                        <v-btn x-small height="54" color="primary"  class="ml-2 d-sm-none" @click="props.enter()">
+                          <img src="/icons/enter.png" width="30">
+                        </v-btn>
+                      </template>
                     </formsFieldsTextComponent>
                   </v-col>
                   <v-col class="col-12 col-md-5">
-                    <formsFieldsTextButtonComponent :disabled="UBICACION_ARTI == ''" :value="product.COD_BARRAS" :handler="updateBarcodeProduct" background-color="white" label-color="white--text" @enter="setCodigobarras($event)" label="Código de barras" required>
+                    <formsFieldsTextButtonComponent :disabled="UBICACION_ARTI == ''" :value="product.COD_BARRAS"
+                      :handler="updateBarcodeProduct" background-color="white" label-color="white--text"
+                      @enter="setCodigobarras($event)" label="Código de barras" required>
                       <img src="/icons/barcode.png" width="30">
                       <template v-slot:buttonicon>
-                            <img src="/icons/barcode-scanner.png" width="30">
-</template>
+                        <img src="/icons/barcode-scanner.png" width="30">
+                      </template>
+                      <template v-slot:enterbutton>
+                        <v-btn x-small height="54" color="primary" class="ml-2 d-sm-none">
+                          <img src="/icons/enter.png" width="30">
+                        </v-btn>
+                      </template>
                     </formsFieldsTextButtonComponent>
                   </v-col>
 
@@ -52,7 +75,8 @@
                   </v-col>
 
                   <v-col class="col-12 col-md-5">
-                    <formsFieldsTextComponent background-color="white" label-color="white--text" :value="setFechaVenc()" label="Fecha de vencimiento" readonly>
+                    <formsFieldsTextComponent background-color="white" label-color="white--text" :value="setFechaVenc()"
+                      label="Fecha de vencimiento" readonly>
                       <img src="/icons/calendar.png" width="30">
                     </formsFieldsTextComponent>
                     <div v-if="errorFechaVenc" class="red--text">
@@ -69,7 +93,7 @@
                     <v-btn-toggle class="elevation-3 rounded-lg" color="primary white--text" style="width:100%">
                       <v-btn width="25%" active-class="primary" disabled class="font-weight-bold btn-count"
                         :class="(product.cuenta == 0)?'primary':''">
-                          <img src="/icons/0.png" width="30">
+                        <img src="/icons/0.png" width="30">
                       </v-btn>
                       <v-btn width="25%" active-class="primary" disabled class="font-weight-bold btn-count"
                         :class="(product.cuenta == 1)?'primary':''">
@@ -107,7 +131,8 @@
                     </formsFieldsTextComponent>
                   </v-col>
                   <v-col class="col-md-3 col-12">
-                    <v-btn block color="success darken-1" class="font-weight-bold rounded-lg mt-7" height="55" @click="setCantExtra();">
+                    <v-btn block color="success darken-1" class="font-weight-bold rounded-lg mt-7" height="55"
+                      @click="setCantExtra();">
                       Agregar cuenta</v-btn>
                   </v-col>
                   <v-col class="col-md-3 col-12"></v-col>
@@ -125,7 +150,7 @@
 
 
                 </v-row>
-                
+
               </v-form>
 
             </v-card-text>
@@ -470,12 +495,12 @@
         this.errorConteo = false
         this.product.cuenta = parseInt(this.product.cuenta) + 1
 
-        const funcSaveLog = function(ULTIMO_REG,VM) {
+        const funcSaveLog = function (ULTIMO_REG, VM) {
           VM.$store.dispatch('articles/saveLog', {
             ...VM.product,
             ...VM.user,
-            CANT_CONTEO:VM.cantFinal,
-            UBICACION_PARTIDA:VM.UBICACION_ARTI,
+            CANT_CONTEO: VM.cantFinal,
+            UBICACION_PARTIDA: VM.UBICACION_ARTI,
             ULTIMO_REG: ULTIMO_REG,
           })
         }
@@ -483,28 +508,28 @@
         if (this.updateSobrante) {
           this.$store.dispatch('articles/saveSobrante', {
             ...this.product,
-            CANT_CONTEO:this.cantFinal
+            CANT_CONTEO: this.cantFinal
           })
-          funcSaveLog('Si',this)
+          funcSaveLog('Si', this)
           return
         }
         if (this.product.CANT_CONTEO != this.product.CANT_PEND) {
           this.errorConteo = true
           if (this.product.cuenta == 3) {
             this.$store.dispatch('articles/saveAjuste', {
-            ...this.product,
-            CANT_CONTEO:this.cantFinal
-          })
-            funcSaveLog('Si',this)
+              ...this.product,
+              CANT_CONTEO: this.cantFinal
+            })
+            funcSaveLog('Si', this)
             this.product = {}
             return
           }
         } else {
-          funcSaveLog('Si',this)
+          funcSaveLog('Si', this)
           this.product = {}
           return
         }
-        funcSaveLog('No',this)
+        funcSaveLog('No', this)
       },
       save(date) {
         this.$refs.menu.save(date)
@@ -518,7 +543,7 @@
         return this.$store.getters['articles/getLocationList']
       },
       cantFinal() {
-          return this.product.UNI_X_BULTO * this.product.CANTIDAD + this.cantExtra ?? 0
+        return this.product.UNI_X_BULTO * this.product.CANTIDAD + this.cantExtra ?? 0
       }
     },
     watch: {
@@ -545,4 +570,5 @@
       }
     }
   }
+
 </script>
