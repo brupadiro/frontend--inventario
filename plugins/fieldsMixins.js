@@ -64,7 +64,7 @@ export default {
         UNI_X_BULTO: 0,
         CANTIDAD:0,
       }
-  },
+},
     setFechaVenc(){
       return moment(this.product.FECHA_VENCI).add(1,'day').format('DD/MM/YYYY')
     }
