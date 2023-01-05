@@ -407,8 +407,10 @@
         this.cantExtra += this.product.CANT_CONTEO
         this.product = {
           CANT_CONTEO: 0,
-          UNI_X_BULTO: 0
+          UNI_X_BULTO: 0,
+          CANTIDAD:0,
         }
+        this.focus()
       },
       cleanStorage() {
         localStorage.removeItem('user')

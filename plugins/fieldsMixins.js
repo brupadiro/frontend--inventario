@@ -59,10 +59,14 @@ export default {
       this.user.USUARIO = valor
     },
     clearFields(){
-      this.product = {}
-    },
+      this.product = {
+        CANT_CONTEO: 0,
+        UNI_X_BULTO: 0,
+        CANTIDAD:0,
+      }
+  },
     setFechaVenc(){
-      return moment(this.product.FECHA_VENCI).format('DD/MM/YYYY')
+      return moment(this.product.FECHA_VENCI).add(1,'day').format('DD/MM/YYYY')
     }
   },
   watch:{
