@@ -518,7 +518,8 @@
             CANT_CONTEO: this.cantFinal
           })
           funcSaveLog('Si', this)
-          return
+          this.cantExtra = 0
+         return
         }
         if (this.product.CANT_CONTEO != this.product.CANT_PEND) {
           this.errorConteo = true
@@ -530,6 +531,7 @@
               CANT_CONTEO: this.cantFinal
             })
             funcSaveLog('Si', this)
+            this.cantExtra = 0
             return
           }
         } else {
@@ -539,6 +541,7 @@
             UNI_X_BULTO: 0,
             CANTIDAD: 0,
           }
+          this.cantExtra = 0
           return
         }
         funcSaveLog('No', this)
@@ -548,8 +551,8 @@
               CANTIDAD: 0,
               cuenta: this.product.cuenta
             }
-
-      },
+            this.cantExtra = 0
+     },
       save(date) {
         this.$refs.menu.save(date)
       },
