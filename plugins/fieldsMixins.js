@@ -24,7 +24,9 @@ export default {
   },
   methods: {
     setCodigobarras(valor) {
-        this.product = {}
+        this.product = {
+          cuenta:this.product.cuenta
+        }
       this.checkProduct(valor)
       this.$forceUpdate()
     },

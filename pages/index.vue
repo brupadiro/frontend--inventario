@@ -14,7 +14,7 @@
               <v-form ref="form">
                 <v-row>
                   <v-col class="col-md-2 col-12">
-                    <formsFieldsTextComponent background-color="white" label-color="white--text" :value="user.USUARIO"
+                    <formsFieldsTextComponent background-color="white" label-color="white--text" :editable="user.USUARI" :value="user.USUARIO"
                       @enter="setUser($event)" label="Usuario" required>
                       <img src="/icons/account.png" width="30">
                       <template v-slot:enterbutton="props">
@@ -441,9 +441,12 @@
           const extraInfo = await this.$store.dispatch('articles/findExtraInfo', barcode)
           product.UNI_X_BULTO = product.UNI_X_BULTO ?? 1
           product.FECHA_VENCI = fechaVencs[0]
-          this.product = product
+          console.log(this.product.cuenta)
+          this.product = {
+            ...product,
+            cuenta:this.product.cuenta ?? 0
+          }
           this.product.COD_BARRAS = barcode
-          this.product.cuenta = 0
           if (this.product.UBICACION_PARTIDA != this.UBICACION_ARTI) {
             this.openModalUbication = true
           }
