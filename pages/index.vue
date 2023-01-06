@@ -496,6 +496,8 @@
           })
           return
         }
+
+
         this.openModalConteo = true
         this.errorConteo = false
         this.product.cuenta = parseInt(this.product.cuenta) + 1
@@ -520,6 +522,14 @@
         }
         if (this.product.CANT_CONTEO != this.product.CANT_PEND) {
           this.errorConteo = true
+
+        this.product = {
+          CANT_CONTEO: 0,
+          UNI_X_BULTO: 0,
+          CANTIDAD:0,
+          cuenta:this.product.cuenta
+        }
+
           if (this.product.cuenta == 3) {
             this.$store.dispatch('articles/saveAjuste', {
               ...this.product,
