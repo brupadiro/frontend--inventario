@@ -38,7 +38,7 @@
                       @enter="setUbicacionArti" :editable="ubicacionError" label="Ubicacion" required>
                       <img src="/icons/pin.png" width="30">
                       <template v-slot:enterbutton="props">
-                        <v-btn x-small height="54" color="primary"  class="ml-2 d-sm-none" @click="props.enter()">
+                        <v-btn x-small height="54" color="primary" class="ml-2 d-sm-none" @click="props.enter()">
                           <img src="/icons/enter.png" width="30">
                         </v-btn>
                       </template>
@@ -349,7 +349,7 @@
           }">Enviar nuevo conteo</v-btn>
         </v-card-actions>
         <v-card-actions v-else>
-          <v-btn block color="primary" @click="openModalConteo = false;focus();">Aceptar</v-btn>
+          <v-btn block color="primary" @click="openModalConteo = false;">Aceptar</v-btn>
         </v-card-actions>
 
       </v-card>
@@ -408,7 +408,7 @@
         this.product = {
           CANT_CONTEO: 0,
           UNI_X_BULTO: 0,
-          CANTIDAD:0,
+          CANTIDAD: 0,
         }
         this.focus()
       },
@@ -425,7 +425,7 @@
         this.$root.$emit('focus')
       },
       formatDate(date) {
-        if(this.product.FECHA_VENCI){
+        if (this.product.FECHA_VENCI) {
           return moment(date).add(1, 'days').format('DD/MM/YYYY')
         }
         return moment(date).format('DD/MM/YYYY')
@@ -523,28 +523,32 @@
         if (this.product.CANT_CONTEO != this.product.CANT_PEND) {
           this.errorConteo = true
 
-        this.product = {
-          CANT_CONTEO: 0,
-          UNI_X_BULTO: 0,
-          CANTIDAD:0,
-          cuenta:this.product.cuenta
-        }
-
+          this.focus()
           if (this.product.cuenta == 3) {
             this.$store.dispatch('articles/saveAjuste', {
               ...this.product,
               CANT_CONTEO: this.cantFinal
             })
             funcSaveLog('Si', this)
-            this.product = {}
             return
           }
         } else {
           funcSaveLog('Si', this)
-          this.product = {}
+          this.product = {
+            CANT_CONTEO: 0,
+            UNI_X_BULTO: 0,
+            CANTIDAD: 0,
+          }
           return
         }
         funcSaveLog('No', this)
+        this.product = {
+              CANT_CONTEO: 0,
+              UNI_X_BULTO: 0,
+              CANTIDAD: 0,
+              cuenta: this.product.cuenta
+            }
+
       },
       save(date) {
         this.$refs.menu.save(date)
