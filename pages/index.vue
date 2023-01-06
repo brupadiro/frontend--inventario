@@ -439,7 +439,7 @@
           product = JSON.parse(JSON.stringify(this.articlesList[0]))
         if (product) {
           const extraInfo = await this.$store.dispatch('articles/findExtraInfo', barcode)
-          product.UNI_X_BULTO = extraInfo ?.data ?.UNI_X_BULTO ?? 1
+          product.UNI_X_BULTO = product.UNI_X_BULTO ?? 1
           product.FECHA_VENCI = fechaVencs[0]
           this.product = product
           this.product.COD_BARRAS = barcode
