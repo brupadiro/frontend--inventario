@@ -521,7 +521,7 @@
           this.cantExtra = 0
          return
         }
-        if (this.product.CANT_CONTEO != this.product.CANT_PEND) {
+        if (this.cantFinal != this.product.CANT_PEND) {
           this.errorConteo = true
 
           this.focus()
