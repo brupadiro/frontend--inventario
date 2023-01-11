@@ -1,13 +1,20 @@
-export default{
-    data() {
-        return {
-            disabled:false
-        }
+export default {
+  props: {
+    enterActive: {
+      type: Boolean,
+      default: false
     },
-    methods:{
-        enterEvent(){
-            this.disabled = true
-            this.$emit('enter',this.fieldValue)
-        }
+  },
+  data() {
+    return {
+      disabled: false,
     }
+  },
+  methods: {
+    enterEvent() {
+      if (!this.enterActive) return
+      this.disabled = true
+      this.$emit('enter', this.fieldValue)
+    }
+  }
 }

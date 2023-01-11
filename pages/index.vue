@@ -14,7 +14,7 @@
               <v-form ref="form">
                 <v-row>
                   <v-col class="col-md-2 col-12">
-                    <formsFieldsTextComponent background-color="white" label-color="white--text" :editable="user.USUARI" :value="user.USUARIO"
+                    <formsFieldsTextComponent background-color="white" label-color="white--text" enterActive :editable="user.USUARI" :value="user.USUARIO"
                       @enter="setUser($event)" label="Usuario" required>
                       <img src="/icons/account.png" width="30">
                       <template v-slot:enterbutton="props">
@@ -34,7 +34,7 @@
                     </formsFieldsSelectComponent>
                   </v-col>
                   <v-col class="col-md-4 col-12">
-                    <formsFieldsTextComponent background-color="white" label-color="white--text" :value="UBICACION_ARTI"
+                    <formsFieldsTextComponent background-color="white" label-color="white--text" enterActive :value="UBICACION_ARTI"
                       @enter="setUbicacionArti" :editable="ubicacionError" label="Ubicacion" required>
                       <img src="/icons/pin.png" width="30">
                       <template v-slot:enterbutton="props">
@@ -534,6 +534,12 @@
               CANT_CONTEO: this.cantFinal
             })
             funcSaveLog('Si', this)
+            this.product = {
+              CANT_CONTEO: 0,
+              UNI_X_BULTO: 0,
+              CANTIDAD: 0,
+            }
+
             this.cantExtra = 0
             return
           }

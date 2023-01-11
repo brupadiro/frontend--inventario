@@ -80,6 +80,7 @@ export default {
     },
     "UBICACION_ARTI":{
       handler(val){
+        if(this.locationList.length == 0) return
         const checkLocation = this.locationList.find(item=>item == val)
         if(checkLocation == undefined) {
           this.ubicacionError = true
