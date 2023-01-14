@@ -66,7 +66,8 @@
         fieldValue: this.value,
         isValid: null,
         focused: false,
-        actionSuccess: false
+        actionSuccess: false,
+        enterActive:true
       }
     },
     updated() {

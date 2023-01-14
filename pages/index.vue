@@ -45,7 +45,7 @@
                     </formsFieldsTextComponent>
                   </v-col>
                   <v-col class="col-12 col-md-5">
-                    <formsFieldsTextButtonComponent :disabled="UBICACION_ARTI == ''" :value="product.COD_BARRAS"
+                    <formsFieldsTextButtonComponent :disabled="UBICACION_ARTI == ''" enterActive :value="product.COD_BARRAS"
                       :handler="updateBarcodeProduct" background-color="white" label-color="white--text"
                       @enter="setCodigobarras($event)" label="Código de barras" required>
                       <img src="/icons/barcode.png" width="30">
