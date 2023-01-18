@@ -37,6 +37,12 @@ export const actions = {
     } = await this.$axios.get(`/articulos/extrainfo/${id}`)
     return data
   },
+  async findPendingProducts(context,loc) {
+    const {
+      data: data
+    } = await this.$axios.get(`/articulos/findPartidasWithPendCant/${loc}`)
+    return data
+  },
   async saveLog(context,article) {
     console.log(article)
     const {

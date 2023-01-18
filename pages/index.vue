@@ -310,6 +310,43 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-dialog v-model="openConfirmFinishCount" persistent>
+      <v-card>
+        <v-card-title class="font-weight-bold">
+          Aviso&nbsp;
+          <v-spacer></v-spacer>
+          <img src="/icons/alert.png" width="30">
+        </v-card-title>
+        <v-divider></v-divider>
+        <v-card-text class="py-2">
+          Aun tienes productos sin contar en la ubicacion, deseas terminar el conteo?
+        </v-card-text>
+        <v-card-text class="py-2">
+          <v-row class="py-3">
+            <v-col class="col-6">
+              <span class="text-subtitle-1 font-weight-regular">Productos pendientes</span>
+            </v-col>
+            <v-col class="col-6 d-flex justify-end">
+              <span class="text-subtitle-1 font-weight-regular">{{ pendingProducts }}</span>
+            </v-col>
+          </v-row>
+          <v-divider></v-divider>
+          </v-card-text>
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-btn outlined @click="()=>{
+            this.openConfirmFinishCount = false;
+            this.focus();
+          }">No</v-btn>
+          <v-spacer></v-spacer>
+
+          <v-btn color="primary" @click="()=>{
+            openConfirmFinishCount = false;
+            updateSobrante = true
+          }">Si</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
 
 
     <v-dialog v-model="openModalConteo" persistent>
@@ -372,10 +409,12 @@
       openModalBarcodeDeposit: false,
       openModalConfirmacion: false,
       openModalUbication: false,
+      openConfirmFinishCount:false,
       openModalConteo: false,
       openNoArticlesModal: false,
       updateSobrante: false,
       cantExtra: 0,
+      pendingProducts:0,
       fechavencs: [],
       date: null,
       menu: false,
@@ -413,6 +452,12 @@
         this.focus()
       },
       cleanStorage() {
+        console.log(this.pendingProducts)
+        if(this.pendingProducts!=0) {
+          console.log('no se puede limpiar')
+          this.openConfirmFinishCount = true
+          return
+        }
         localStorage.removeItem('user')
         localStorage.removeItem('ubicacion')
         this.user = {}
@@ -436,7 +481,13 @@
         fechaVencs = [...new Set(fechaVencs)]
         let product = null
         if (this.articlesList.length > 0)
-          product = JSON.parse(JSON.stringify(this.articlesList[0]))
+
+          product = this.articlesList.find((item) => item.UBICACION_PARTIDA == this.UBICACION_ARTI)
+          if(product == undefined) { 
+            product = JSON.parse(JSON.stringify(this.articlesList[0]))
+          } else {
+            product = JSON.parse(JSON.stringify(product))
+          }
         if (product) {
           const extraInfo = await this.$store.dispatch('articles/findExtraInfo', barcode)
           product.UNI_X_BULTO = product.UNI_X_BULTO ?? 1
@@ -447,6 +498,7 @@
             cuenta:this.product.cuenta ?? 0
           }
           this.product.COD_BARRAS = barcode
+          console.log(this.product.UBICACION_PARTIDA,this.UBICACION_ARTI)
           if (this.product.UBICACION_PARTIDA != this.UBICACION_ARTI) {
             this.openModalUbication = true
           }
@@ -520,6 +572,7 @@
             ...this.product,
             CANT_CONTEO: this.cantFinal
           })
+          this.pendingProducts -= 1
           funcSaveLog('Si', this)
           this.cantExtra = 0
          return
@@ -533,6 +586,7 @@
               ...this.product,
               CANT_CONTEO: this.cantFinal
             })
+            this.pendingProducts -= 1
             funcSaveLog('Si', this)
             this.product = {
               CANT_CONTEO: 0,
@@ -544,6 +598,7 @@
             return
           }
         } else {
+          this.pendingProducts -= 1
           funcSaveLog('Si', this)
           this.product = {
             CANT_CONTEO: 0,

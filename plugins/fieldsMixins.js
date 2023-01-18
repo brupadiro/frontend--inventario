@@ -39,8 +39,10 @@ export default {
     setDeposito(valor) {
       this.product.deposito = valor
     },
-    setUbicacionArti(valor) {
+    async setUbicacionArti(valor) {
       this.UBICACION_ARTI = valor
+      this.pendingProducts = await this.$store.dispatch('articles/findPendingProducts',valor)
+      this.focus()
     },
     setFechavenc(valor) {
       this.product.fechavenc = valor
