@@ -568,6 +568,7 @@
             CANT_CONTEO: VM.cantFinal,
             UBICACION_PARTIDA: VM.UBICACION_ARTI,
             ULTIMO_REG: ULTIMO_REG,
+            CAM_FECH: VM.CAM_FECH
           })
         }
 
@@ -590,7 +591,6 @@
             this.$store.dispatch('articles/saveAjuste', {
               ...this.product,
               CANT_CONTEO: this.cantFinal,
-              CAM_FECH: this.CAM_FECH
             })
             this.pendingProducts -= 1
             funcSaveLog('Si', this)
@@ -610,13 +610,6 @@
             CANT_CONTEO: 0,
             UNI_X_BULTO: 0,
             CANTIDAD: 0,
-          }
-          if(this.CAM_FECH == true) {
-            this.$store.dispatch('articles/saveAjuste', {
-              ...this.product,
-              CANT_CONTEO: this.cantFinal,
-              CAM_FECH: this.CAM_FECH
-            })
           }
           this.cantExtra = 0
           return
