@@ -611,6 +611,13 @@
             UNI_X_BULTO: 0,
             CANTIDAD: 0,
           }
+          if(this.CAM_FECH == true) {
+            this.$store.dispatch('articles/saveAjuste', {
+              ...this.product,
+              CANT_CONTEO: this.cantFinal,
+              CAM_FECH: this.CAM_FECH
+            })
+          }
           this.cantExtra = 0
           return
         }
