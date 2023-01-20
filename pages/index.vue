@@ -426,6 +426,7 @@
       newFechaVenc: false,
       activePicker: null,
       errorConteo: false,
+      CAM_FECH:false
     }),
     mounted() {
       this.$store.dispatch('articles/findAllLocations')
@@ -476,10 +477,12 @@
         return moment(date).format('DD/MM/YYYY')
       },
       async checkProduct(barcode) {
+        
         await this.$store.dispatch('articles/find', barcode)
         let fechaVencs = this.articlesList.filter((item) => item.FECHA_VENCI != null).map((item) => item.FECHA_VENCI)
         fechaVencs = [...new Set(fechaVencs)]
         let product = null
+        this.CAM_FECH = false
         if (this.articlesList.length > 0)
 
           product = this.articlesList.find((item) => item.UBICACION_PARTIDA == this.UBICACION_ARTI)
@@ -536,6 +539,7 @@
         this.product.fechavenc = this.newFechaVenc
         this.errorFechaVenc = false;
         this.errorfechaVencText = ''
+        this.CAM_FECH = true
       },
       updateBarcodeProduct() {
         this.openModalBarcodeProduct = true
@@ -570,7 +574,8 @@
         if (this.updateSobrante) {
           this.$store.dispatch('articles/saveSobrante', {
             ...this.product,
-            CANT_CONTEO: this.cantFinal
+            CANT_CONTEO: this.cantFinal,
+            CAM_FECH: this.CAM_FECH
           })
           this.pendingProducts -= 1
           funcSaveLog('Si', this)
@@ -581,10 +586,11 @@
           this.errorConteo = true
 
           this.focus()
-          if (this.product.cuenta == 3) {
+          if (this.product.cuenta == 1) {
             this.$store.dispatch('articles/saveAjuste', {
               ...this.product,
-              CANT_CONTEO: this.cantFinal
+              CANT_CONTEO: this.cantFinal,
+              CAM_FECH: this.CAM_FECH
             })
             this.pendingProducts -= 1
             funcSaveLog('Si', this)
