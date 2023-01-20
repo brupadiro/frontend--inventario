@@ -586,7 +586,7 @@
           this.errorConteo = true
 
           this.focus()
-          if (this.product.cuenta == 1) {
+          if (this.product.cuenta == 3) {
             this.$store.dispatch('articles/saveAjuste', {
               ...this.product,
               CANT_CONTEO: this.cantFinal,
