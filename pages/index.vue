@@ -14,8 +14,8 @@
               <v-form ref="form">
                 <v-row>
                   <v-col class="col-md-2 col-12">
-                    <formsFieldsTextComponent background-color="white" label-color="white--text" enterActive :editable="user.USUARI" :value="user.USUARIO"
-                      @enter="setUser($event)" label="Usuario" required>
+                    <formsFieldsTextComponent background-color="white" label-color="white--text" enterActive
+                      :editable="user.USUARI" :value="user.USUARIO" @enter="setUser($event)" label="Usuario" required>
                       <img src="/icons/account.png" width="30">
                       <template v-slot:enterbutton="props">
                         <v-btn x-small height="54" color="primary" class="ml-2 d-sm-none" @click="props.enter()">
@@ -34,8 +34,9 @@
                     </formsFieldsSelectComponent>
                   </v-col>
                   <v-col class="col-md-4 col-12">
-                    <formsFieldsTextComponent background-color="white" label-color="white--text" enterActive :value="UBICACION_ARTI"
-                      @enter="setUbicacionArti" :editable="ubicacionError" label="Ubicacion" required>
+                    <formsFieldsTextComponent background-color="white" label-color="white--text" enterActive
+                      :value="UBICACION_ARTI" @enter="setUbicacionArti" :editable="ubicacionError" label="Ubicacion"
+                      required>
                       <img src="/icons/pin.png" width="30">
                       <template v-slot:enterbutton="props">
                         <v-btn x-small height="54" color="primary" class="ml-2 d-sm-none" @click="props.enter()">
@@ -45,9 +46,9 @@
                     </formsFieldsTextComponent>
                   </v-col>
                   <v-col class="col-12 col-md-5">
-                    <formsFieldsTextButtonComponent :disabled="UBICACION_ARTI == ''" enterActive :value="product.COD_BARRAS"
-                      :handler="updateBarcodeProduct" background-color="white" label-color="white--text"
-                      @enter="setCodigobarras($event)" label="Código de barras" required>
+                    <formsFieldsTextButtonComponent :disabled="UBICACION_ARTI == ''" enterActive
+                      :value="product.COD_BARRAS" :handler="updateBarcodeProduct" background-color="white"
+                      label-color="white--text" @enter="setCodigobarras($event)" label="Código de barras" required>
                       <img src="/icons/barcode.png" width="30">
                       <template v-slot:buttonicon>
                         <img src="/icons/barcode-scanner.png" width="30">
@@ -111,10 +112,14 @@
                   </v-col>
 
                   <v-col class="col-12 col-md-3">
-                    <formsFieldsTextComponent background-color="white" label-color="white--text"
-                      v-model="product.CANTIDAD" label="Cantidad de bultos" required>
-                      <img src="/icons/staging.png" width="30">
-                    </formsFieldsTextComponent>
+                    <label class="font-weight-regular text-uppercase text-subtitle-2 white--text">Cantidad de bultos</label>
+                    <v-input hide-details class="mt-2">
+                      <v-text-field height="55" class="rounded-lg font-weight-regular" background-color="white" solo ref="input"  hide-details v-model="product.CANTIDAD">
+                        <template v-slot:prepend-inner>
+                          <img src="/icons/staging.png" width="30">
+                        </template>
+                      </v-text-field>
+                    </v-input>
                   </v-col>
 
                   <v-col class="col-12 col-md-3">
@@ -176,7 +181,7 @@
         <v-card-subtitle>Seleccione una</v-card-subtitle>
         <v-card-text class="py-2">
           <v-list>
-            <v-list-item v-for="fechavenc in this.fechavencs" :key="id">
+            <v-list-item v-for="(fechavenc,index) in this.fechavencs" :key="index">
               <v-list-item-content>
                 <v-list-item-title class="font-weight-bold">
                   {{formatDate(fechavenc)}}
@@ -331,7 +336,7 @@
             </v-col>
           </v-row>
           <v-divider></v-divider>
-          </v-card-text>
+        </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
           <v-btn outlined @click="()=>{
@@ -409,12 +414,12 @@
       openModalBarcodeDeposit: false,
       openModalConfirmacion: false,
       openModalUbication: false,
-      openConfirmFinishCount:false,
+      openConfirmFinishCount: false,
       openModalConteo: false,
       openNoArticlesModal: false,
       updateSobrante: false,
       cantExtra: 0,
-      pendingProducts:0,
+      pendingProducts: 0,
       fechavencs: [],
       date: null,
       menu: false,
@@ -426,7 +431,8 @@
       newFechaVenc: false,
       activePicker: null,
       errorConteo: false,
-      CAM_FECH:false
+      CAM_FECH: false,
+      focusQuantity: false,
     }),
     mounted() {
       this.$store.dispatch('articles/findAllLocations')
@@ -454,7 +460,7 @@
       },
       cleanStorage() {
         console.log(this.pendingProducts)
-        if(this.pendingProducts!=0) {
+        if (this.pendingProducts != 0) {
           console.log('no se puede limpiar')
           this.openConfirmFinishCount = true
           return
@@ -477,7 +483,7 @@
         return moment(date).format('DD/MM/YYYY')
       },
       async checkProduct(barcode) {
-        
+
         await this.$store.dispatch('articles/find', barcode)
         let fechaVencs = this.articlesList.filter((item) => item.FECHA_VENCI != null).map((item) => item.FECHA_VENCI)
         fechaVencs = [...new Set(fechaVencs)]
@@ -486,11 +492,11 @@
         if (this.articlesList.length > 0)
 
           product = this.articlesList.find((item) => item.UBICACION_PARTIDA == this.UBICACION_ARTI)
-          if(product == undefined) { 
-            product = JSON.parse(JSON.stringify(this.articlesList[0]))
-          } else {
-            product = JSON.parse(JSON.stringify(product))
-          }
+        if (product == undefined) {
+          product = JSON.parse(JSON.stringify(this.articlesList[0]))
+        } else {
+          product = JSON.parse(JSON.stringify(product))
+        }
         if (product) {
           const extraInfo = await this.$store.dispatch('articles/findExtraInfo', barcode)
           product.UNI_X_BULTO = product.UNI_X_BULTO ?? 1
@@ -498,10 +504,10 @@
           console.log(this.product.cuenta)
           this.product = {
             ...product,
-            cuenta:this.product.cuenta ?? 0
+            cuenta: this.product.cuenta ?? 0
           }
           this.product.COD_BARRAS = barcode
-          console.log(this.product.UBICACION_PARTIDA,this.UBICACION_ARTI)
+          console.log(this.product.UBICACION_PARTIDA, this.UBICACION_ARTI)
           if (this.product.UBICACION_PARTIDA != this.UBICACION_ARTI) {
             this.openModalUbication = true
           }
@@ -581,7 +587,7 @@
           this.pendingProducts -= 1
           funcSaveLog('Si', this)
           this.cantExtra = 0
-         return
+          return
         }
         if (this.cantFinal != this.product.CANT_PEND) {
           this.errorConteo = true
@@ -616,13 +622,13 @@
         }
         funcSaveLog('No', this)
         this.product = {
-              CANT_CONTEO: 0,
-              UNI_X_BULTO: 0,
-              CANTIDAD: 0,
-              cuenta: this.product.cuenta
-            }
-            this.cantExtra = 0
-     },
+          CANT_CONTEO: 0,
+          UNI_X_BULTO: 0,
+          CANTIDAD: 0,
+          cuenta: this.product.cuenta
+        }
+        this.cantExtra = 0
+      },
       save(date) {
         this.$refs.menu.save(date)
       },
@@ -651,6 +657,7 @@
         handler(val) {
           if (val.CANTIDAD) {
             this.product.CANT_CONTEO = val.UNI_X_BULTO * val.CANTIDAD
+            console.log(this.product.CANT_CONTEO)
           } else {
             this.product.CANT_CONTEO = 0
           }

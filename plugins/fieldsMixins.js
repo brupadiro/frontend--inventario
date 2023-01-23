@@ -29,6 +29,13 @@ export default {
         }
       this.checkProduct(valor)
       this.$forceUpdate()
+      this.$nextTick(() => {
+        setTimeout(() => {
+          this.$refs.input.focus()
+        }, 0);
+      })
+  
+
     },
     setSku(valor) {
       this.product.sku = valor
@@ -66,7 +73,7 @@ export default {
       this.product = {
         CANT_CONTEO: 0,
         UNI_X_BULTO: 0,
-        CANTIDAD:0,
+        CANTIDAD:null,
       }
 },
     setFechaVenc(){
