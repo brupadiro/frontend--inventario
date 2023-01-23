@@ -484,7 +484,10 @@
       },
       async checkProduct(barcode) {
 
-        await this.$store.dispatch('articles/find', barcode)
+        await this.$store.dispatch('articles/find', {
+          barcode: barcode,
+          ubicacion: this.UBICACION_ARTI
+        })
         let fechaVencs = this.articlesList.filter((item) => item.FECHA_VENCI != null).map((item) => item.FECHA_VENCI)
         fechaVencs = [...new Set(fechaVencs)]
         let product = null
@@ -582,6 +585,16 @@
           this.$store.dispatch('articles/saveSobrante', {
             ...this.product,
             CANT_CONTEO: this.cantFinal,
+            CAM_FECH: this.CAM_FECH
+          })
+          this.pendingProducts -= 1
+          funcSaveLog('Si', this)
+          this.cantExtra = 0
+          return
+        } else if (this.cantFinal > this.product.CANT_PEND){
+          this.$store.dispatch('articles/saveSobrante', {
+            ...this.product,
+            CANT_CONTEO: this.cantFinal - this.product.CANT_PEND,
             CAM_FECH: this.CAM_FECH
           })
           this.pendingProducts -= 1

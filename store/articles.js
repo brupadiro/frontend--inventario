@@ -25,8 +25,13 @@ export const actions = {
         context.commit('setLocationList', response.data)
       })
   },
-  find(context,id) {
-    return this.$axios.get(`/articulos/${id}`)
+  find(context,{barcode, ubicacion}) {
+    return this.$axios.get(`/articulos/`,{
+      params:{
+        barcode:barcode,
+        ubicacion:ubicacion
+      }
+    })
       .then(response => {
         context.commit('setList', response.data)
       })
