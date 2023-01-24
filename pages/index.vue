@@ -365,7 +365,7 @@
         <v-card-text class="py-2" v-if="!errorConteo">
           Conteo realizado con exito, guardando en sistema...
         </v-card-text>
-        <v-card-text class="py-2" v-else-if="errorConteo && this.product.cuenta <4">
+        <v-card-text class="py-2" v-else-if="errorConteo && this.product.cuenta <3">
           La cantidad final no coincide con la cantidad previamente registrada, realice nuevamente el conteo
           <!--
           <v-row>
@@ -607,6 +607,11 @@
           this.pendingProducts -= 1
           funcSaveLog('Si', this)
           this.cantExtra = 0
+          this.product = {
+              CANT_CONTEO: 0,
+              UNI_X_BULTO: 0,
+              CANTIDAD: 0,
+            }
           return
         }else {
           this.$store.dispatch('articles/saveAjuste', {
