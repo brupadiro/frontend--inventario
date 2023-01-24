@@ -591,7 +591,14 @@
           funcSaveLog('Si', this)
           this.cantExtra = 0
           return
-        } else if (this.cantFinal > this.product.CANT_PEND){
+        } 
+        if (this.cantFinal != this.product.CANT_PEND) {
+          this.errorConteo = true
+
+          this.focus()
+          if (this.product.cuenta == 3) {
+
+            if (this.cantFinal > this.product.CANT_PEND){
           this.$store.dispatch('articles/saveSobrante', {
             ...this.product,
             CANT_CONTEO: this.cantFinal - this.product.CANT_PEND,
@@ -601,13 +608,8 @@
           funcSaveLog('Si', this)
           this.cantExtra = 0
           return
-        }
-        if (this.cantFinal != this.product.CANT_PEND) {
-          this.errorConteo = true
-
-          this.focus()
-          if (this.product.cuenta == 3) {
-            this.$store.dispatch('articles/saveAjuste', {
+        }else {
+          this.$store.dispatch('articles/saveAjuste', {
               ...this.product,
               CANT_CONTEO: this.cantFinal,
             })
@@ -621,6 +623,9 @@
 
             this.cantExtra = 0
             return
+
+        }
+
           }
         } else {
           this.pendingProducts -= 1
