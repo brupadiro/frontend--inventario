@@ -7,7 +7,7 @@
             <v-card-title>
               Stock
               <v-spacer></v-spacer>
-              <v-btn outlined @click="cleanStorage()">Terminar cuenta</v-btn>
+              <v-btn outlined @click="confirmCleanStorage()">Terminar cuenta</v-btn>
             </v-card-title>
             <v-divider></v-divider>
             <v-card-text>
@@ -332,7 +332,7 @@
               <span class="text-subtitle-1 font-weight-regular">Productos pendientes</span>
             </v-col>
             <v-col class="col-6 d-flex justify-end">
-              <span class="text-subtitle-1 font-weight-regular">{{ pendingProducts }}</span>
+              <span class="text-subtitle-1 font-weight-regular">{{ pendingProducts.length }}</span>
             </v-col>
           </v-row>
           <v-divider></v-divider>
@@ -346,8 +346,8 @@
           <v-spacer></v-spacer>
 
           <v-btn color="primary" @click="()=>{
-            openConfirmFinishCount = false;
-            updateSobrante = true
+            this.openConfirmFinishCount = false;
+            this.cleanStorage();
           }">Si</v-btn>
         </v-card-actions>
       </v-card>
@@ -419,7 +419,7 @@
       openNoArticlesModal: false,
       updateSobrante: false,
       cantExtra: 0,
-      pendingProducts: 0,
+      pendingProducts: [],
       fechavencs: [],
       date: null,
       menu: false,
@@ -458,13 +458,21 @@
         }
         this.focus()
       },
-      cleanStorage() {
-        console.log(this.pendingProducts)
-        if (this.pendingProducts != 0) {
+      confirmCleanStorage(){
+        if (this.pendingProducts.length != 0) {
           console.log('no se puede limpiar')
           this.openConfirmFinishCount = true
           return
+        } else{
+          this.cleanStorage()
         }
+
+      },
+      cleanStorage() {
+        this.$store.dispatch('articles/savePendings',{
+          articles:this.pendingProducts,
+          UBICACION_PARTIDA:this.UBICACION_ARTI
+        })
         localStorage.removeItem('user')
         localStorage.removeItem('ubicacion')
         this.user = {}
@@ -587,7 +595,8 @@
             CANT_CONTEO: this.cantFinal,
             CAM_FECH: this.CAM_FECH
           })
-          this.pendingProducts -= 1
+          const index = this.pendingProducts.findIndex((item) => item.COD_ARTICULO == this.product.COD_ARTICULO)
+          this.$delete(this.pendingProducts, index)
           funcSaveLog('Si', this)
           this.cantExtra = 0
           return
@@ -604,7 +613,8 @@
             CANT_CONTEO: this.cantFinal - this.product.CANT_PEND,
             CAM_FECH: this.CAM_FECH
           })
-          this.pendingProducts -= 1
+          const index = this.pendingProducts.findIndex((item) => item.COD_ARTICULO == this.product.COD_ARTICULO)
+          this.$delete(this.pendingProducts, index)
           funcSaveLog('Si', this)
           this.cantExtra = 0
           this.product = {
@@ -618,7 +628,8 @@
               ...this.product,
               CANT_CONTEO: this.cantFinal,
             })
-            this.pendingProducts -= 1
+            const index = this.pendingProducts.findIndex((item) => item.COD_ARTICULO == this.product.COD_ARTICULO)
+          this.$delete(this.pendingProducts, index)
             funcSaveLog('Si', this)
             this.product = {
               CANT_CONTEO: 0,
@@ -633,7 +644,8 @@
 
           }
         } else {
-          this.pendingProducts -= 1
+          const index = this.pendingProducts.findIndex((item) => item.COD_ARTICULO == this.product.COD_ARTICULO)
+          this.$delete(this.pendingProducts, index)
           funcSaveLog('Si', this)
           this.product = {
             CANT_CONTEO: 0,

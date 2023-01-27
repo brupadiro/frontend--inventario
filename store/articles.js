@@ -57,6 +57,14 @@ export const actions = {
     })
     return data
   },
+  async savePendings(context,pendings) {
+    const {
+      data: data
+    } = await this.$axios.post(`/articulos/savePendings/`,{
+      data:pendings
+    })
+    return data
+  },
 
   async saveAjuste(context,article) {
     const {
