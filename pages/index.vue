@@ -471,7 +471,8 @@
       cleanStorage() {
         this.$store.dispatch('articles/savePendings',{
           articles:this.pendingProducts,
-          UBICACION_PARTIDA:this.UBICACION_ARTI
+          UBICACION_PARTIDA:this.UBICACION_ARTI,
+          USUARIO:this.user.USUARIO
         })
         localStorage.removeItem('user')
         localStorage.removeItem('ubicacion')
