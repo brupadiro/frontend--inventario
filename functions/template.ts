@@ -43,7 +43,7 @@ export function getTemplate({
       <main>
         <article>
           <hgroup>
-            <h1>Full Escabio</h1>
+            <h1>Fullescabio</h1>
             <h2>Ingresa la contrasena para iniciar.</h2>
           </hgroup>
           ${withError ? `<p class="error">Incorrect password, please try again.</p>` : ''}
