@@ -43,14 +43,14 @@ export function getTemplate({
       <main>
         <article>
           <hgroup>
-            <h1>Password</h1>
-            <h2>Please enter your password for this site.</h2>
+            <h1>Full Escabio</h1>
+            <h2>Ingresa la contrasena para iniciar.</h2>
           </hgroup>
           ${withError ? `<p class="error">Incorrect password, please try again.</p>` : ''}
           <form method="post" action="/cfp_login">
             <input type="hidden" name="redirect" value="${redirectPath}" />
             <input type="password" name="password" placeholder="Password" aria-label="Password" autocomplete="current-password" required autofocus>
-            <button type="submit" class="contrast">Login</button>
+            <button type="submit" class="contrast">Iniciar sesion</button>
           </form>
         </article>
       </main>
