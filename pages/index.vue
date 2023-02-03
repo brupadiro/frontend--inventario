@@ -602,6 +602,14 @@
           this.$delete(this.pendingProducts, index)
           funcSaveLog('Si', this)
           this.cantExtra = 0
+
+          this.product = {
+              CANT_CONTEO: 0,
+              UNI_X_BULTO: 0,
+              CANTIDAD: 0,
+            }
+            this.focus()
+
           return
         } 
         if (this.cantFinal != this.product.CANT_PEND) {
