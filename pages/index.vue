@@ -82,7 +82,7 @@
                     </formsFieldsTextComponent>
                     <div v-if="errorFechaVenc" class="red--text">
                       {{ errorfechaVencText }}
-                      <v-btn color="info" @click="modalUpdateDate=true" class="fonti-weight-regular black--text">
+                      <v-btn color="info" block @click="modalUpdateDate=true" class="mt-2 fonti-weight-regular black--text">
                         Actualizar fecha de vencimiento</v-btn>
                     </div>
                   </v-col>
@@ -497,7 +497,9 @@
           barcode: barcode,
           ubicacion: this.UBICACION_ARTI
         })
-        let fechaVencs = this.articlesList.filter((item) => item.FECHA_VENCI != null).map((item) => item.FECHA_VENCI)
+        let fechaVencs = this.articlesList.filter((item) => item.FECHA_VENCI != null && item.UBICACION_PARTIDA == this.UBICACION_ARTI).map((item) => item.FECHA_VENCI)
+        console.log(fechaVencs)
+
         fechaVencs = [...new Set(fechaVencs)]
         let product = null
         this.CAM_FECH = false
