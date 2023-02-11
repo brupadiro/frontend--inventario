@@ -420,6 +420,7 @@
       updateSobrante: false,
       cantExtra: 0,
       pendingProducts: [],
+      countList:[],
       fechavencs: [],
       date: null,
       menu: false,
@@ -591,6 +592,21 @@
             CAM_FECH: VM.CAM_FECH
           })
         }
+        const updatePendingProducts = function (VM) {
+          const index = VM.pendingProducts.findIndex((item) => item.COD_ARTICULO == VM.product.COD_ARTICULO)
+          VM.$delete(VM.pendingProducts, index)
+        }
+
+        const clearProduct = function (VM) {
+          VM.product = {
+            CANT_CONTEO: 0,
+            UNI_X_BULTO: 0,
+            CANTIDAD: 0,
+          }
+          VM.cantExtra = 0
+          VM.focus()
+        }
+        
 
         if (this.updateSobrante) {
           this.$store.dispatch('articles/saveSobrante', {
@@ -598,21 +614,39 @@
             CANT_CONTEO: this.cantFinal,
             CAM_FECH: this.CAM_FECH
           })
-          const index = this.pendingProducts.findIndex((item) => item.COD_ARTICULO == this.product.COD_ARTICULO)
-          this.$delete(this.pendingProducts, index)
+          updatePendingProducts(this)
           funcSaveLog('Si', this)
-          this.cantExtra = 0
-
-          this.product = {
-              CANT_CONTEO: 0,
-              UNI_X_BULTO: 0,
-              CANTIDAD: 0,
-            }
-            this.focus()
+          clearProduct(this)            
+          this.focus()
 
           return
         } 
+
+
+
         if (this.cantFinal != this.product.CANT_PEND) {
+
+
+
+
+          this.countList.push(this.cantFinal)
+          if(this.countList.length > 1) {
+            for (let i = 1; i < this.countList.length; i++) {
+              if (this.countList[i] === this.countList[i - 1]) {
+                this.$store.dispatch('articles/saveAjuste', {
+                  ...this.product,
+                  CANT_CONTEO: this.cantFinal,
+                })
+                updatePendingProducts(this)              
+                funcSaveLog('Si', this)
+                clearProduct(this) 
+                return;
+              }
+            }
+          }
+
+
+
           this.errorConteo = true
 
           this.focus()
@@ -624,56 +658,31 @@
             CANT_CONTEO: this.cantFinal - this.product.CANT_PEND,
             CAM_FECH: this.CAM_FECH
           })
-          const index = this.pendingProducts.findIndex((item) => item.COD_ARTICULO == this.product.COD_ARTICULO)
-          this.$delete(this.pendingProducts, index)
+          updatePendingProducts(this)
           funcSaveLog('Si', this)
-          this.cantExtra = 0
-          this.product = {
-              CANT_CONTEO: 0,
-              UNI_X_BULTO: 0,
-              CANTIDAD: 0,
-            }
+          clearProduct(this) 
           return
         }else {
           this.$store.dispatch('articles/saveAjuste', {
               ...this.product,
               CANT_CONTEO: this.cantFinal,
             })
-            const index = this.pendingProducts.findIndex((item) => item.COD_ARTICULO == this.product.COD_ARTICULO)
-          this.$delete(this.pendingProducts, index)
+            updatePendingProducts(this)            
             funcSaveLog('Si', this)
-            this.product = {
-              CANT_CONTEO: 0,
-              UNI_X_BULTO: 0,
-              CANTIDAD: 0,
-            }
-
-            this.cantExtra = 0
+            clearProduct(this)             
             return
 
         }
 
           }
         } else {
-          const index = this.pendingProducts.findIndex((item) => item.COD_ARTICULO == this.product.COD_ARTICULO)
-          this.$delete(this.pendingProducts, index)
+          updatePendingProducts(this)          
           funcSaveLog('Si', this)
-          this.product = {
-            CANT_CONTEO: 0,
-            UNI_X_BULTO: 0,
-            CANTIDAD: 0,
-          }
-          this.cantExtra = 0
+          clearProduct(this) 
           return
         }
         funcSaveLog('No', this)
-        this.product = {
-          CANT_CONTEO: 0,
-          UNI_X_BULTO: 0,
-          CANTIDAD: 0,
-          cuenta: this.product.cuenta
-        }
-        this.cantExtra = 0
+        clearProduct(this) 
       },
       save(date) {
         this.$refs.menu.save(date)
