@@ -15,7 +15,7 @@
                 <v-row>
                   <v-col class="col-md-2 col-12">
                     <formsFieldsTextComponent background-color="white" label-color="white--text" enterActive
-                      :editable="user.USUARI" :value="user.USUARIO" @enter="setUser($event)" label="Usuario" required>
+                      :editable="user.USUARIO ==''" :value="user.USUARIO" @enter="setUser($event)" label="Usuario" required>
                       <img src="/icons/account.png" width="30">
                       <template v-slot:enterbutton="props">
                         <v-btn x-small height="54" color="primary" class="ml-2 d-sm-none" @click="props.enter()">
@@ -477,7 +477,9 @@
         })
         localStorage.removeItem('user')
         localStorage.removeItem('ubicacion')
-        this.user = {}
+        this.user = {
+          USUARIO:''
+        }
         this.product = {
           cuenta: 0
         }
