@@ -367,20 +367,11 @@
         </v-card-text>
         <v-card-text class="py-2" v-else-if="errorConteo && this.product.cuenta <3">
           La cantidad final no coincide con la cantidad previamente registrada, realice nuevamente el conteo
-          <!--
-          <v-row>
-            <v-col class="col-12">
-              <formsFieldsTextComponent background-color="white" label-color="white--text" v-model="product.CANTIDAD"
-                label="Cantidad de bultos" required>
-                <img src="/icons/staging.png" width="30">
-              </formsFieldsTextComponent>
-            </v-col>
-          </v-row>
-
-
-          -->
         </v-card-text>
         <v-card-text class="py-2" v-else>
+          {{ errorConteo && this.product.cuenta <3 }}
+          {{ errorConteo }}
+          {{ this.product.cuenta }}
           La cantidad final no coincide con la cantidad previamente registrada, Realizando ajuste en sistema
         </v-card-text>
         <v-divider></v-divider>
@@ -419,6 +410,7 @@
       openNoArticlesModal: false,
       updateSobrante: false,
       cantExtra: 0,
+      cuenta: 0,
       pendingProducts: [],
       countList:[],
       fechavencs: [],
@@ -456,6 +448,7 @@
           CANT_CONTEO: 0,
           UNI_X_BULTO: 0,
           CANTIDAD: 0,
+          cuenta:this.product.cuenta
         }
         this.focus()
       },
@@ -604,6 +597,7 @@
             CANT_CONTEO: 0,
             UNI_X_BULTO: 0,
             CANTIDAD: 0,
+            cuenta:VM.product.cuenta
           }
           VM.cantExtra = 0
           VM.focus()
@@ -619,11 +613,11 @@
           updatePendingProducts(this)
           funcSaveLog('Si', this)
           clearProduct(this)            
+          this.product.cuenta = 0
           this.focus()
 
           return
         } 
-
 
 
         if (this.cantFinal != this.product.CANT_PEND) {
@@ -633,6 +627,7 @@
 
           this.countList.push(this.cantFinal)
           if(this.countList.length > 1) {
+            console.log("COUNTlISTM",this.countList)
             for (let i = 1; i < this.countList.length; i++) {
               if (this.countList[i] === this.countList[i - 1]) {
                 this.$store.dispatch('articles/saveAjuste', {
@@ -663,6 +658,7 @@
           updatePendingProducts(this)
           funcSaveLog('Si', this)
           clearProduct(this) 
+          this.product.cuenta = 0
           return
         }else {
           this.$store.dispatch('articles/saveAjuste', {
@@ -671,7 +667,8 @@
             })
             updatePendingProducts(this)            
             funcSaveLog('Si', this)
-            clearProduct(this)             
+            clearProduct(this)
+            this.product.cuenta = 0             
             return
 
         }
