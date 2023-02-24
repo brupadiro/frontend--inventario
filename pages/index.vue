@@ -638,6 +638,7 @@
                 funcSaveLog('Si', this)
                 clearProduct(this) 
                 this.product.cuenta = 0
+                this.countList = []
                 return;
               }
             }
