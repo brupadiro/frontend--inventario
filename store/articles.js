@@ -25,6 +25,17 @@ export const actions = {
         context.commit('setLocationList', response.data)
       })
   },
+
+  async findByDateAndCod(context, {code, loc}) {
+    return await this.$axios.get(`/articulos/findByDateAndCod/`,{
+      params:{
+        code:code,
+        loc:loc
+      }
+    })
+  },
+
+
   find(context,{barcode, ubicacion}) {
     return this.$axios.get(`/articulos/`,{
       params:{

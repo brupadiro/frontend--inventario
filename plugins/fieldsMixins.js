@@ -14,6 +14,7 @@ export default {
         UNI_X_BULTO: 0,
         CANT_CONTEO: 0,
       },
+      productCounted:false,
       UBICACION_ARTI: '',
       user: {
         USUARIO: '',
@@ -23,7 +24,7 @@ export default {
     }
   },
   methods: {
-    setCodigobarras(valor) {
+    async setCodigobarras(valor) {
         this.product = {
           cuenta:this.product.cuenta
         }

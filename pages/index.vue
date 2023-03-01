@@ -289,6 +289,34 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+
+    <v-dialog v-model="productCounted" persistent>
+      <v-card>
+        <v-card-title class="font-weight-bold">
+          Aviso&nbsp;
+          <v-spacer></v-spacer>
+          <img src="/icons/alert.png" width="30">
+        </v-card-title>
+        <v-divider></v-divider>
+        <v-card-text class="py-2">
+          El producto ya se conto hoy, deseas actualizarlo?
+        </v-card-text>
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-btn outlined @click="()=>{
+            this.productCounted = false;
+            this.clearFields();
+            this.focus();
+          }">Salir</v-btn>
+          <v-spacer></v-spacer>
+          <v-btn color="primary" @click="()=>{
+            productCounted = false;
+          }">Guardar</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+
     <v-dialog v-model="openNoArticlesModal" persistent>
       <v-card>
         <v-card-title class="font-weight-bold">
@@ -496,6 +524,9 @@
         let fechaVencs = this.articlesList.filter((item) => item.FECHA_VENCI != null && item.UBICACION_PARTIDA == this.UBICACION_ARTI).map((item) => item.FECHA_VENCI)
         console.log(fechaVencs)
 
+
+
+
         fechaVencs = [...new Set(fechaVencs)]
         let product = null
         this.CAM_FECH = false
@@ -508,6 +539,18 @@
           product = JSON.parse(JSON.stringify(product))
         }
         if (product) {
+
+
+
+
+
+          let cantProductsInDay = (await this.$store.dispatch('articles/findByDateAndCod',{
+        code:product.COD_ARTICULO,
+        loc:this.UBICACION_ARTI
+        })).data
+        this.productCounted = cantProductsInDay == 0 ? false : true
+
+
           const extraInfo = await this.$store.dispatch('articles/findExtraInfo', barcode)
           product.UNI_X_BULTO = product.UNI_X_BULTO ?? 1
           product.FECHA_VENCI = fechaVencs[0]
