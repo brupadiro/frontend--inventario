@@ -721,10 +721,6 @@
           }
         } else {
 
-          this.$store.dispatch('articles/saveAjuste', {
-              ...this.product,
-              CANT_CONTEO: this.cantFinal,
-            })
 
           updatePendingProducts(this)          
           funcSaveLog('Si', this)
