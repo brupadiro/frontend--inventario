@@ -92,21 +92,25 @@
                       CUENTA</label>
 
                     <v-btn-toggle class="elevation-3 rounded-lg" color="primary white--text" style="width:100%">
-                      <v-btn width="25%" active-class="primary" disabled class="font-weight-bold btn-count"
+                      <v-btn width="20%" active-class="primary" disabled class="font-weight-bold btn-count"
                         :class="(product.cuenta == 0)?'primary':''">
                         <img src="/icons/0.png" width="30">
                       </v-btn>
-                      <v-btn width="25%" active-class="primary" disabled class="font-weight-bold btn-count"
+                      <v-btn width="20%" active-class="primary" disabled class="font-weight-bold btn-count"
                         :class="(product.cuenta == 1)?'primary':''">
                         <img src="/icons/1.png" width="30">
                       </v-btn>
-                      <v-btn width="25%" active-class="primary" disabled class="font-weight-bold btn-count"
+                      <v-btn width="20%" active-class="primary" disabled class="font-weight-bold btn-count"
                         :class="(product.cuenta == 2)?'primary':''">
                         <img src="/icons/2.png" width="30">
                       </v-btn>
-                      <v-btn width="25%" active-class="primary" disabled class="font-weight-bold btn-count"
+                      <v-btn width="20%" active-class="primary" disabled class="font-weight-bold btn-count"
                         :class="(product.cuenta == 3)?'primary':''">
                         <img src="/icons/3.png" width="30">
+                      </v-btn>
+                      <v-btn width="20%" active-class="primary" disabled class="font-weight-bold btn-count"
+                        :class="(product.cuenta == 4)?'primary':''">
+                        <img src="/icons/4.png" width="30">
                       </v-btn>
                     </v-btn-toggle>
                   </v-col>
@@ -317,6 +321,31 @@
     </v-dialog>
 
 
+    <v-dialog v-model="productNotExists" persistent>
+      <v-card>
+        <v-card-title class="font-weight-bold">
+          Aviso&nbsp;
+          <v-spacer></v-spacer>
+          <img src="/icons/alert.png" width="30">
+        </v-card-title>
+        <v-divider></v-divider>
+        <v-card-text class="py-2">
+          El producto no existe en la base de datos.
+        </v-card-text>
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-btn outlined @click="()=>{
+            this.productNotExists = false;
+            this.clearFields();
+            this.focus();
+          }">Salir</v-btn>
+          <v-spacer></v-spacer>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+
+
     <v-dialog v-model="openNoArticlesModal" persistent>
       <v-card>
         <v-card-title class="font-weight-bold">
@@ -522,7 +551,6 @@
           ubicacion: this.UBICACION_ARTI
         })
         let fechaVencs = this.articlesList.filter((item) => item.FECHA_VENCI != null && item.UBICACION_PARTIDA == this.UBICACION_ARTI).map((item) => item.FECHA_VENCI)
-        console.log(fechaVencs)
 
 
 
@@ -530,14 +558,19 @@
         fechaVencs = [...new Set(fechaVencs)]
         let product = null
         this.CAM_FECH = false
-        if (this.articlesList.length > 0)
+        if (this.articlesList.length > 0){
+          console.log(this.articlesList.length)
+            product = this.articlesList.find((item) => item.UBICACION_PARTIDA == this.UBICACION_ARTI)
+          if (product == undefined) {
+            product = JSON.parse(JSON.stringify(this.articlesList[0]))
+          } else {
+            product = JSON.parse(JSON.stringify(product))
+          }
 
-          product = this.articlesList.find((item) => item.UBICACION_PARTIDA == this.UBICACION_ARTI)
-        if (product == undefined) {
-          product = JSON.parse(JSON.stringify(this.articlesList[0]))
-        } else {
-          product = JSON.parse(JSON.stringify(product))
         }
+
+
+
         if (product) {
 
 
@@ -583,7 +616,7 @@
             this.errorfechaVencText = ''
           }
         } else {
-          console.log(product)
+          this.productNotExists = true
         }
       },
       checkReadonly() {
@@ -692,7 +725,7 @@
           this.errorConteo = true
 
           this.focus()
-          if (this.product.cuenta == 3) {
+          if (this.product.cuenta == 4) {
 
             if (this.cantFinal > this.product.CANT_PEND){
           this.$store.dispatch('articles/saveSobrante', {
@@ -749,7 +782,7 @@
       articlesList: {
         handler(val) {
           if (val.length == 0) {
-            this.openNoArticlesModal = true
+            this.productNotExists = true
           }
         },
         deep: true

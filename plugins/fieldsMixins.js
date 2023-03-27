@@ -15,6 +15,7 @@ export default {
         CANT_CONTEO: 0,
       },
       productCounted:false,
+      productNotExists:false,
       UBICACION_ARTI: '',
       user: {
         USUARIO: '',
