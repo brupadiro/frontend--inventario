@@ -36,11 +36,12 @@ export const actions = {
   },
 
 
-  find(context,{barcode, ubicacion}) {
+  find(context,{barcode, ubicacion, DEPO}) {
     return this.$axios.get(`/articulos/`,{
       params:{
         barcode:barcode,
-        ubicacion:ubicacion
+        ubicacion:ubicacion,
+        DEPO:DEPO
       }
     })
       .then(response => {

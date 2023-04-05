@@ -27,7 +27,7 @@
                   <v-col class="col-md-2 col-12">
                     <formsFieldsSelectComponent
                       :items="['DEP','DUM','FUL','MAL','MAY','MEL','NDT','PAT','PRE','RUP','VEN']"
-                      @enter="setDepo($event)" background-color="white" label-color="white--text" v-model="user.DEP"
+                      @enter="setDepo($event)" background-color="white" label-color="white--text" v-model="user.DEPO"
                       label="Depósito" required>
                       <img src="/icons/barcode-scanner.png" width="30">
 
@@ -548,7 +548,8 @@
 
         await this.$store.dispatch('articles/find', {
           barcode: barcode,
-          ubicacion: this.UBICACION_ARTI
+          ubicacion: this.UBICACION_ARTI,
+          DEPO: this.user.DEPO
         })
         let fechaVencs = this.articlesList.filter((item) => item.FECHA_VENCI != null && item.UBICACION_PARTIDA == this.UBICACION_ARTI).map((item) => item.FECHA_VENCI)
 
@@ -703,7 +704,6 @@
 
           this.countList.push(this.cantFinal)
           if(this.countList.length > 1) {
-            console.log("COUNTlISTM",this.countList)
             for (let i = 1; i < this.countList.length; i++) {
               if (this.countList[i] === this.countList[i - 1]) {
                 this.$store.dispatch('articles/saveAjuste', {

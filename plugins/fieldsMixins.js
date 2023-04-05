@@ -19,7 +19,7 @@ export default {
       UBICACION_ARTI: '',
       user: {
         USUARIO: '',
-        DEP: ''
+        DEPO: 'DEP'
       },
       ubicacionError: false
     }
