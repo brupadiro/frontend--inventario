@@ -26,8 +26,7 @@
                   </v-col>
                   <v-col class="col-md-2 col-12">
                     <formsFieldsSelectComponent
-                      :items="['DEP','DUM','FUL','MAL','MAY','MEL','NDT','PAT','PRE','RUP','VEN']"
-                      @enter="setDepo($event)" background-color="white" label-color="white--text" v-model="user.DEPO"
+                      :items="['DEP','DUM','FUL','MAL','MAY','MEL','NDT','PAT','PRE','RUP','VEN']" background-color="white" label-color="white--text" v-model="user.DEPO"
                       label="Depósito" required>
                       <img src="/icons/barcode-scanner.png" width="30">
 
@@ -276,7 +275,7 @@
         </v-card-title>
         <v-divider></v-divider>
         <v-card-text class="py-2">
-          El producto no se encuentra en la ubicacion selecciona, desea guardar el sobrante?
+          El producto no se encuentra en la ubicacion seleccionada, desea guardar el sobrante?
         </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
@@ -288,6 +287,34 @@
           <v-spacer></v-spacer>
           <v-btn color="primary" @click="()=>{
             openModalUbication = false;
+            updateSobrante = true
+          }">Guardar</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+
+    <v-dialog v-model="openModalDep" persistent>
+      <v-card>
+        <v-card-title class="font-weight-bold">
+          Aviso&nbsp;
+          <v-spacer></v-spacer>
+          <img src="/icons/alert.png" width="30">
+        </v-card-title>
+        <v-divider></v-divider>
+        <v-card-text class="py-2">
+          El producto no se encuentra en el deposito seleccionado, desea guardar el sobrante?
+        </v-card-text>
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-btn outlined @click="()=>{
+            this.openModalDep = false;
+            this.clearFields();
+            this.focus();
+          }">Salir</v-btn>
+          <v-spacer></v-spacer>
+          <v-btn color="primary" @click="()=>{
+            openModalDep = false;
             updateSobrante = true
           }">Guardar</v-btn>
         </v-card-actions>
@@ -462,6 +489,7 @@
       openModalBarcodeDeposit: false,
       openModalConfirmacion: false,
       openModalUbication: false,
+      openModalDep:false,
       openConfirmFinishCount: false,
       openModalConteo: false,
       openNoArticlesModal: false,
@@ -598,6 +626,11 @@
           if (this.product.UBICACION_PARTIDA != this.UBICACION_ARTI) {
             this.openModalUbication = true
           }
+          if (this.product.COD_DEPO != this.user.DEPO) {
+            this.openModalDep = true
+          }
+
+
           var fechavenc = fechaVencs[0]
           const fechaVencBefore = moment(fechavenc, 'DD/MM/YYYY').isBefore(moment())
           if (fechaVencs.length > 1) {
