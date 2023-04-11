@@ -791,6 +791,7 @@
           updatePendingProducts(this)          
           funcSaveLog('Si', this)
           clearProduct(this) 
+          this.product.cuenta = 0             
           return
         }
         funcSaveLog('No', this)
