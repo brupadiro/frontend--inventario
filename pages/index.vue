@@ -139,7 +139,7 @@
                     </formsFieldsTextComponent>
                   </v-col>
                   <v-col class="col-md-3 col-12">
-                    <v-btn block color="success darken-1" class="font-weight-bold rounded-lg mt-7" height="55"
+                    <v-btn block color="success darken-1" class="font-weight-bold rounded-lg mt-7" :disabled="blockAddAccount" height="55"
                       @click="setCantExtra();">
                       Agregar cuenta</v-btn>
                   </v-col>
@@ -437,6 +437,26 @@
       </v-card>
     </v-dialog>
 
+    <v-dialog v-model="openConfirmCount" persistent>
+      <v-card>
+        <v-card-title class="font-weight-bold">
+          Aviso&nbsp;
+          <v-spacer></v-spacer>
+          <img src="/icons/alert.png" width="30">
+        </v-card-title>
+        <v-divider></v-divider>
+        <v-card-text class="py-2">
+          Todos los articulos fueron contados correctamente
+        </v-card-text>
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="primary" @click="()=>{
+            openConfirmFinishCount = false;
+          }">ACEPTAR</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
 
     <v-dialog v-model="openModalConteo" persistent>
       <v-card>
@@ -491,6 +511,7 @@
       openModalUbication: false,
       openModalDep:false,
       openConfirmFinishCount: false,
+      openConfirmCount: false,
       openModalConteo: false,
       openNoArticlesModal: false,
       updateSobrante: false,
@@ -511,6 +532,7 @@
       errorConteo: false,
       CAM_FECH: false,
       focusQuantity: false,
+      blockAddAccount: false,
     }),
     mounted() {
       this.$store.dispatch('articles/findAllLocations')
@@ -535,6 +557,7 @@
           CANTIDAD: 0,
           cuenta:this.product.cuenta
         }
+        this.blockAddAccount = true
         this.focus()
       },
       confirmCleanStorage(){
@@ -543,6 +566,7 @@
           this.openConfirmFinishCount = true
           return
         } else{
+          this.openConfirmCount = true
           this.cleanStorage()
         }
 
@@ -681,6 +705,15 @@
           })
           return
         }
+
+        if(user.USUARIO == '') {
+          this.$toast.error('Debe ingresar un usuario', {
+            duration: 2000,
+            containerClass: 'toast-container',
+          })
+          return
+        }
+        this.blockAddAccount = false
 
 
         this.openModalConteo = true
