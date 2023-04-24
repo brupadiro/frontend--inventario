@@ -452,7 +452,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="primary" @click="()=>{
-            openConfirmFinishCount = false;
+            this.openConfirmFinishCount = false;
           }">ACEPTAR</v-btn>
         </v-card-actions>
       </v-card>
