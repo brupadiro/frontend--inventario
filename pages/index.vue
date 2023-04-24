@@ -586,6 +586,7 @@
           cuenta: 0
         }
         this.UBICACION_ARTI = ""
+        this.openConfirmCount = true
       },
       focus() {
         this.$root.$emit('focus')
