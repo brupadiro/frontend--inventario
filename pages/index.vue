@@ -707,7 +707,7 @@
           return
         }
 
-        if(user.USUARIO == '') {
+        if(this.user.USUARIO == '') {
           this.$toast.error('Debe ingresar un usuario', {
             duration: 2000,
             containerClass: 'toast-container',
