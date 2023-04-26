@@ -79,7 +79,7 @@ export default {
       }
 },
     setFechaVenc(){
-      return moment(this.product.FECHA_VENCI).add(1,'day').format('DD/MM/YYYY')
+      return moment(this.product.FECHA_VENCI).format('DD/MM/YYYY')
     }
   },
   watch:{
