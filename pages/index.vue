@@ -745,6 +745,7 @@
 
 
           this.countList.push(this.cantFinal)
+          
           if(this.countList.length > 1) {
             for (let i = 1; i < this.countList.length; i++) {
               if (this.countList[i] === this.countList[i - 1]) {
