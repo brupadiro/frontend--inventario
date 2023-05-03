@@ -294,11 +294,6 @@
     </v-dialog>
 
 
-    <dialogsCountComponent :product="product" v-model="openModalConteo" :errorConteo="errorConteo" 
-    @clearAndFocus="()=>{
-      this.clearFields();
-      this.focus();
-    }"> </dialogsCountComponent>
 
     <v-dialog v-model="productCounted" persistent>
       <v-card>
@@ -737,6 +732,7 @@
           funcSaveLog('Si', this)
           clearProduct(this)            
           this.product.cuenta = 0
+          this.countList = []           
           this.focus()
 
           return
@@ -783,6 +779,8 @@
           funcSaveLog('Si', this)
           clearProduct(this) 
           this.product.cuenta = 0
+          this.countList = []           
+
           return
         }else {
           this.$store.dispatch('articles/saveAjuste', {
@@ -792,7 +790,8 @@
             updatePendingProducts(this)            
             funcSaveLog('Si', this)
             clearProduct(this)
-            this.product.cuenta = 0             
+            this.product.cuenta = 0  
+            this.countList = []           
             return
 
         }
@@ -804,7 +803,8 @@
           updatePendingProducts(this)          
           funcSaveLog('Si', this)
           clearProduct(this) 
-          this.product.cuenta = 0             
+          this.product.cuenta = 0 
+          this.countList = []                       
           return
         }
         funcSaveLog('No', this)
