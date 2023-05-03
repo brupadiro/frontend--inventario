@@ -295,6 +295,8 @@
 
 
 
+
+
     <v-dialog v-model="productCounted" persistent>
       <v-card>
         <v-card-title class="font-weight-bold">
@@ -607,7 +609,8 @@
 
           let cantProductsInDay = (await this.$store.dispatch('articles/findByDateAndCod',{
         code:product.COD_ARTICULO,
-        loc:this.UBICACION_ARTI
+        loc:this.UBICACION_ARTI,
+        dep:this.DEPO
         })).data
         this.productCounted = cantProductsInDay == 0 ? false : true
 
@@ -694,6 +697,7 @@
         this.openModalConteo = true
         this.errorConteo = false
         this.product.cuenta = parseInt(this.product.cuenta) + 1
+        
 
         const funcSaveLog = function (ULTIMO_REG, VM) {
           VM.$store.dispatch('articles/saveLog', {
@@ -721,6 +725,7 @@
           VM.focus()
         }
         
+        this.updateSobrante = this.product.CANT_PEND == 0 ? true : false
 
         if (this.updateSobrante) {
           this.$store.dispatch('articles/saveSobrante', {
