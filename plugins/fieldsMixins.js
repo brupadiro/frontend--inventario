@@ -9,13 +9,13 @@ export default {
         deposito: '',
         UBICACION_ARTI: '',
         fechavenc: '',
-        cuenta: 0,
+        cuenta:0,
         CANTIDAD: 0,
         UNI_X_BULTO: 0,
         CANT_CONTEO: 0,
       },
-      productCounted: false,
-      productNotExists: false,
+      productCounted:false,
+      productNotExists:false,
       UBICACION_ARTI: '',
       user: {
         USUARIO: '',
@@ -26,10 +26,9 @@ export default {
   },
   methods: {
     async setCodigobarras(valor) {
-      console.log(valor)
-      this.product = {
-        cuenta: this.product.cuenta
-      }
+        this.product = {
+          cuenta:this.product.cuenta
+        }
       this.checkProduct(valor)
       this.$forceUpdate()
       this.$nextTick(() => {
@@ -37,7 +36,7 @@ export default {
           this.$refs.input.focus()
         }, 0);
       })
-
+  
 
     },
     setSku(valor) {
@@ -51,7 +50,7 @@ export default {
     },
     async setUbicacionArti(valor) {
       this.UBICACION_ARTI = valor
-      this.pendingProducts = await this.$store.dispatch('articles/findPendingProducts', valor)
+      this.pendingProducts = await this.$store.dispatch('articles/findPendingProducts',valor)
       this.focus()
     },
     setFechavenc(valor) {
@@ -72,34 +71,31 @@ export default {
     setUser(valor) {
       this.user.USUARIO = valor
     },
-    clearFields() {
+    clearFields(){
       this.product = {
         CANT_CONTEO: 0,
         UNI_X_BULTO: 0,
-        CANTIDAD: null,
+        CANTIDAD:null,
       }
-    },
-    focus() {
-      this.$root.$emit('focus')
-    },
-    setFechaVenc() {
+},
+    setFechaVenc(){
       return moment(this.product.FECHA_VENCI).format('DD/MM/YYYY')
     }
   },
-  watch: {
-    user: {
-      handler(val) {
+  watch:{
+    user:{
+      handler(val){
         localStorage.setItem('user', JSON.stringify(val))
       },
-      deep: true
+      deep:true
     },
-    "UBICACION_ARTI": {
-      handler(val) {
-        if (this.locationList.length == 0) return
-        const checkLocation = this.locationList.find(item => item == val)
-        if (checkLocation == undefined) {
+    "UBICACION_ARTI":{
+      handler(val){
+        if(this.locationList.length == 0) return
+        const checkLocation = this.locationList.find(item=>item == val)
+        if(checkLocation == undefined) {
           this.ubicacionError = true
-          this.$toast.error('Ubicación no válida', {
+          this.$toast.error('Ubicación no válida',{
             duration: 2000,
             containerClass: 'toast-container',
           })
@@ -110,5 +106,6 @@ export default {
       }
     }
   },
-  computed: {}
+  computed:{
+  }
 }
