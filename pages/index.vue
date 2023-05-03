@@ -294,32 +294,11 @@
     </v-dialog>
 
 
-    <v-dialog v-model="openModalDep" persistent>
-      <v-card>
-        <v-card-title class="font-weight-bold">
-          Aviso&nbsp;
-          <v-spacer></v-spacer>
-          <img src="/icons/alert.png" width="30">
-        </v-card-title>
-        <v-divider></v-divider>
-        <v-card-text class="py-2">
-          El producto no se encuentra en el deposito seleccionado, desea guardar el sobrante?
-        </v-card-text>
-        <v-divider></v-divider>
-        <v-card-actions>
-          <v-btn outlined @click="()=>{
-            this.openModalDep = false;
-            this.clearFields();
-            this.focus();
-          }">Salir</v-btn>
-          <v-spacer></v-spacer>
-          <v-btn color="primary" @click="()=>{
-            openModalDep = false;
-            updateSobrante = true
-          }">Guardar</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+    <dialogsCountComponent :product="product" v-model="openModalConteo" :errorConteo="errorConteo" 
+    @clearAndFocus="()=>{
+      this.clearFields();
+      this.focus();
+    }"> </dialogsCountComponent>
 
     <v-dialog v-model="productCounted" persistent>
       <v-card>
