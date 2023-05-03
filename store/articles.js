@@ -45,6 +45,7 @@ export const actions = {
       }
     })
       .then(response => {
+        console.log(response)
         context.commit('setList', response.data)
       })
   },
